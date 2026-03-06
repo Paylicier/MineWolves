@@ -1,0 +1,19 @@
+{
+  "minewolves.cannot_break": "You cannot break this block...",
+  "minewolves.cannot_place": "You cannot place this block here...",
+  "minewolves.game.starting_in": "The game will start in %s seconds!",
+  "minewolves.game.started": "The game has started!",
+  "minewolves.role.villager": "Villager",
+  "minewolves.role.werewolf": "Werewolf",
+  "minewolves.role.seer": "Seer",
+  "minewolves.role.witch": "Witch",
+  "minewolves.role.hunter": "Hunter",
+  "minewolves.role.werewolf.wake_up": "You wake up... Choose a player to eliminate.",
+  "minewolves.role.seer.wake_up": "You wake up... Choose a player to inspect.",
+  "minewolves.role.seer.inspect": "You inspected %s — their role is %s.",
+  "minewolves.role.witch.wake_up": "You wake up... Will you use a potion tonight?",
+  "minewolves.role.witch.heal_used": "You used your heal potion!",
+  "minewolves.role.witch.kill_used": "You used your kill potion on %s!",
+  "minewolves.role.hunter.shoot_prompt": "You have been eliminated! Choose a player to take down with you.",
+  "minewolves.role.hunter.shot": "You shot %s!"
+}

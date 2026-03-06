@@ -1,0 +1,85 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "minewolves:roles/wolf.png",
+      "ascent": -16,
+      "height": 64,
+      "chars": [
+        "W"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minewolves:roles/font/splitter.png",
+      "ascent": -32768,
+      "height": -3,
+      "chars": [
+        "\uF801"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minewolves:roles/font/splitter.png",
+      "ascent": -32768,
+      "height": -4,
+      "chars": [
+        "\uF802"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minewolves:roles/font/splitter.png",
+      "ascent": -32768,
+      "height": -6,
+      "chars": [
+        "\uF803"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minewolves:roles/font/splitter.png",
+      "ascent": -32768,
+      "height": -10,
+      "chars": [
+        "\uF804"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minewolves:roles/font/splitter.png",
+      "ascent": -32768,
+      "height": -18,
+      "chars": [
+        "\uF805"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minewolves:roles/font/splitter.png",
+      "ascent": -32768,
+      "height": -34,
+      "chars": [
+        "\uF806"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minewolves:roles/font/splitter.png",
+      "ascent": -32768,
+      "height": -66,
+      "chars": [
+        "\uF807"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minewolves:roles/font/splitter.png",
+      "ascent": -32768,
+      "height": -130,
+      "chars": [
+        "\uF808"
+      ]
+    }
+  ]
+}

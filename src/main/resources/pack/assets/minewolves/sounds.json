@@ -1,0 +1,9 @@
+{
+  "howl": {
+    "replace": true,
+    "sounds": [
+      "minewolves:howl"
+    ],
+    "subtitle": "Agrouuuu"
+  }
+}
