@@ -64,20 +64,22 @@ public class MineWolvesConfig {
         private int minPlayers = 3;
         private int maxPlayers = 18;
         private int countdownSeconds = 5;
-        private List<List<Integer>> sitPoints = List.of(
-                List.of(18, -47, 41),
-                List.of(20, -47, 31),
-                List.of(24, -47, 37),
-                List.of(22, -47, 40),
-                List.of(24, -47, 35),
-                List.of(19, -47, 41),
-                List.of(24, -47, 38),
-                List.of(16, -47, 38),
-                List.of(15, -47, 38),
-                List.of(18, -47.5, 37),
-                List.of(22, -47.5, 35),
-                List.of(21, -47.5, 48) //todo: add more (-> 18)
+        private List<List<Float>> sitPoints = List.of(
+                List.of(18f, -47f, 41f),
+                List.of(20f, -47f, 31f),
+                List.of(24f, -47f, 37f),
+                List.of(22f, -47f, 40f),
+                List.of(24f, -47f, 35f),
+                List.of(19f, -47f, 41f),
+                List.of(24f, -47f, 38f),
+                List.of(16f, -47f, 38f),
+                List.of(15f, -47f, 38f),
+                List.of(18f, -47.5f, 37f),
+                List.of(22f, -47.5f, 35f),
+                List.of(21f, -47.5f, 48f) //todo: add more (-> 18)
         );
+
+        private List<Float> menuLocation = List.of(1f, -48f, 16f, 90f, 0f);
 
 
         public int getMinPlayers() {
@@ -92,8 +94,12 @@ public class MineWolvesConfig {
             return countdownSeconds;
         }
 
-        public List<List<Integer>> getSitPoints() {
+        public List<List<Float>> getSitPoints() {
             return sitPoints;
+        }
+
+        public List<Float> getMenuLocation() {
+            return menuLocation;
         }
     }
 }

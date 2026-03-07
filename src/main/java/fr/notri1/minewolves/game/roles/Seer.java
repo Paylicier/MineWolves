@@ -1,5 +1,9 @@
 package fr.notri1.minewolves.game.roles;
 
+import fr.notri1.minewolves.game.phases.turns.NightTurn;
+import fr.notri1.minewolves.game.phases.turns.SeerTurn;
+import net.kyori.adventure.key.Key;
+
 /**
  * The Seer can inspect one player each night to learn their role.
  * Wins with the Village team.
@@ -27,13 +31,23 @@ public class Seer extends Role {
     }
 
     @Override
+    public Key getSound() {
+        return Key.key("minewolves", "role.seer");
+    }
+
+    @Override
     public Team getTeam() {
         return Team.VILLAGE;
     }
 
     @Override
-    public void onNightStart() {
-        //todo
+    public int getNightOrder() {
+        return 1; // keeping a margin for potential future roles that might need to act before the Seer (idk)
+    }
+
+    @Override
+    public NightTurn createNightTurn() {
+        return new SeerTurn(this);
     }
 }
 

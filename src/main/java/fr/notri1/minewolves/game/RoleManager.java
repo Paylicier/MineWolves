@@ -27,6 +27,10 @@ public class RoleManager {
         playerRoles.remove(player.getUuid());
     }
 
+    public List<Role> getAliveRoles() {
+        return playerRoles.values().stream().distinct().toList();
+    }
+
 
     public List<Player> getPlayersWithRole(Role role) {
         return playerRoles.entrySet().stream()

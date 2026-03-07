@@ -20,7 +20,7 @@ public class PlayerBlockBreak implements EventListener<PlayerBlockBreakEvent> {
         player.sendActionBar(Component.translatable("minewolves.cannot_break").color(NamedTextColor.RED));
 
         //player.showBossBar(BossBar.bossBar(Component.text("\uF808\uF808\uF808\uF808\uF808\uF808\uF806\uF806\uF802\uF804W").font(Key.key("minewolves", "roles")), 0f, BossBar.Color.WHITE, BossBar.Overlay.PROGRESS));
-
+        //MineWolves.mineWolvesManager.start();
         return null;
     }
 }

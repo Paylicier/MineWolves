@@ -1,5 +1,7 @@
 package fr.notri1.minewolves.game.roles;
 
+import fr.notri1.minewolves.game.phases.turns.NightTurn;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.entity.Player;
 
@@ -32,29 +34,24 @@ public abstract class Role {
      * Returns the description component for this role.
      */
     public Component getDescription() {
-        return Component.translatable("minewolves.role." + getKey() + ".description").color(getTeam().getColor());
+        return Component.translatable("minewolves.role." + getKey() + ".description");
     }
 
     public abstract String getIcon();
+
+    public abstract Key getSound();
 
     /**
      * Returns which team this role belongs to.
      */
     public abstract Team getTeam();
 
-    /**
-     * Called when the night phase begins for this role.
-     * Override to implement night actions (e.g., werewolf kill, seer inspect).
-     */
-    public void onNightStart() {
-        // Default: no action
+    public int getNightOrder() {
+        return -1; // default: not called during night
     }
 
-    /**
-     * Called when the day phase begins.
-     */
-    public void onDayStart() {
-        // Default: no action
+    public NightTurn createNightTurn() {
+        return null; // default: no night turn
     }
 
     /**

@@ -1,5 +1,7 @@
 package fr.notri1.minewolves.game.roles;
 
+import net.kyori.adventure.key.Key;
+
 /**
  * The Hunter can eliminate one player upon death.
  * Wins with the Village team.
@@ -10,7 +12,6 @@ public class Hunter extends Role {
     public String getKey() {
         return "hunter";
     }
-
 
     @Override
     public int getMinPlayers() {
@@ -25,6 +26,11 @@ public class Hunter extends Role {
     @Override
     public String getIcon() {
         return "H";
+    }
+
+    @Override
+    public Key getSound() {
+        return Key.key("minewolves", "role.hunter");
     }
 
     @Override

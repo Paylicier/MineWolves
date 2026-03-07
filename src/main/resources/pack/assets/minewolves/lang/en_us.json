@@ -15,5 +15,12 @@
   "minewolves.role.witch.heal_used": "You used your heal potion!",
   "minewolves.role.witch.kill_used": "You used your kill potion on %s!",
   "minewolves.role.hunter.shoot_prompt": "You have been eliminated! Choose a player to take down with you.",
-  "minewolves.role.hunter.shot": "You shot %s!"
+  "minewolves.role.hunter.shot": "You shot %s!",
+  "minewolves.role.villager.description": "You have no special ability. Use your wits to find the werewolves!",
+  "minewolves.role.werewolf.description": "Each night, choose a villager to eliminate.\nTry to blend in during the day!",
+  "minewolves.role.seer.description": "Each night, inspect a player to learn their role.",
+  "minewolves.role.witch.description": "You have two potions: one to heal, one to kill.",
+  "minewolves.role.hunter.description": "When you die, you can shoot one player.",
+  "minewolves.menu.roles.title": "You are",
+  "minewolves.menu.roles.footer": "Everyone, close your eyes."
 }

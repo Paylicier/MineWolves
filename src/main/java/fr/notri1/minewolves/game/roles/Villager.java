@@ -1,5 +1,7 @@
 package fr.notri1.minewolves.game.roles;
 
+import net.kyori.adventure.key.Key;
+
 /**
  * The Villager has no special ability.
  * Wins with the Village team.
@@ -24,6 +26,11 @@ public class Villager extends Role {
     @Override
     public String getIcon() {
         return "V";
+    }
+
+    @Override
+    public Key getSound() {
+        return Key.key("minewolves", "role.villager");
     }
 
     @Override

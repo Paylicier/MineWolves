@@ -1,5 +1,8 @@
 package fr.notri1.minewolves;
 
+import fr.notri1.minewolves.commands.debug.FakePlayersCommand;
+import fr.notri1.minewolves.commands.debug.RoleMenuCommand;
+import fr.notri1.minewolves.commands.debug.StartCommand;
 import fr.notri1.minewolves.configuration.ConfigManager;
 import fr.notri1.minewolves.configuration.MineWolvesConfig;
 import fr.notri1.minewolves.game.MineWolvesManager;
@@ -42,6 +45,9 @@ public class MineWolves {
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();
         instanceContainer = instanceManager.createInstanceContainer();
 
+        // No time for u
+        instanceContainer.setTimeRate(0);
+
         // Load map
         try {
             instanceContainer.setChunkLoader(new PolarLoader(Path.of("./src/main/resources/map.polar")));
@@ -50,6 +56,9 @@ public class MineWolves {
         }
 
         Listeners.init();
+        MinecraftServer.getCommandManager().register(new StartCommand());
+        MinecraftServer.getCommandManager().register(new RoleMenuCommand());
+        MinecraftServer.getCommandManager().register(new FakePlayersCommand());
 
         mineWolvesManager = new MineWolvesManager();
 

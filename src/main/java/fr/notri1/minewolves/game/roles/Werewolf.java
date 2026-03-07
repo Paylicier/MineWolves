@@ -1,5 +1,6 @@
 package fr.notri1.minewolves.game.roles;
 
+import net.kyori.adventure.key.Key;
 import net.minestom.server.entity.Player;
 
 /**
@@ -31,13 +32,13 @@ public class Werewolf extends Role {
     }
 
     @Override
-    public Team getTeam() {
-        return Team.WEREWOLVES;
+    public Key getSound() {
+        return Key.key("minewolves", "role.werewolf");
     }
 
     @Override
-    public void onNightStart() {
-        // todo
+    public Team getTeam() {
+        return Team.WEREWOLVES;
     }
 
     public Player getTarget() {
@@ -49,6 +50,10 @@ public class Werewolf extends Role {
      */
     public void setTarget(Player target) {
         this.target = target;
+    }
+
+    public int getNightOrder() {
+        return 2;
     }
 }
 

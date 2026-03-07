@@ -1,9 +1,16 @@
 {
-  "howl": {
+  "role.werewolf": {
     "replace": true,
     "sounds": [
       "minewolves:howl"
     ],
     "subtitle": "Agrouuuu"
+  },
+  "narrator.night_falls.en": {
+    "replace": true,
+    "sounds": [
+      "minewolves:narrator/en/night_falls"
+    ],
+    "subtitle": "Narrator : Everyone, close your eyes..."
   }
 }

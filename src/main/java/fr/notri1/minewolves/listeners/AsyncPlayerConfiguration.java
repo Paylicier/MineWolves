@@ -1,6 +1,7 @@
 package fr.notri1.minewolves.listeners;
 
 import fr.notri1.minewolves.MineWolves;
+import fr.notri1.minewolves.Status;
 import fr.notri1.minewolves.pack.PackGenerator;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
@@ -16,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 import static fr.notri1.minewolves.MineWolves.instanceContainer;
+import static fr.notri1.minewolves.MineWolves.mineWolvesManager;
 
 public class AsyncPlayerConfiguration implements EventListener<AsyncPlayerConfigurationEvent> {
     @Override
@@ -26,6 +28,7 @@ public class AsyncPlayerConfiguration implements EventListener<AsyncPlayerConfig
     @Override
     public Result run(AsyncPlayerConfigurationEvent event) {
         final Player player = event.getPlayer();
+        if (mineWolvesManager.status != Status.WAITING) player.kick("Game already started");
         event.setSpawningInstance(instanceContainer);
         player.setRespawnPoint(new Pos(0, 40, 0));
         ResourcePackRequest request = null;
