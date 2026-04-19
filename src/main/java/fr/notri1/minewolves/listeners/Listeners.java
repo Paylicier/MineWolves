@@ -15,7 +15,9 @@ public final class Listeners {
                 .addListener(new AsyncPlayerConfiguration())
                 .addListener(new PlayerBlockBreak())
                 .addListener(new PlayerBlockPlace())
-                .addListener(new PlayerFirstSpawn());
+                .addListener(new PlayerFirstSpawn())
+                .addListener(new PlayerScroll())
+                .addListener(new ServerListPing());
 
         globalEventHandler.addChild(entityNode);
     }

@@ -21,10 +21,11 @@ public class NightPhase extends GamePhase {
     private int currentTurnIndex = 0;
 
     public NightPhase() {
-        turns = new ArrayList<NightTurn>();
+        turns = new ArrayList<>();
 
         mineWolvesManager.roleManager.getAliveRoles().stream()
                 .filter(role -> role.getNightOrder() >= 0)
+                .filter(role -> role.createNightTurn() != null)
                 .sorted(Comparator.comparingInt(role -> role.getNightOrder()))
                 .forEach(role -> turns.add(role.createNightTurn()));
     }
@@ -54,12 +55,31 @@ public class NightPhase extends GamePhase {
 
                 applyBlindness();
 
+                // All animations done — start the first turn
+                nextTurn();
                 return TaskSchedule.stop();
             }
 
             instanceContainer.setTime(currentTime + increment);
             return TaskSchedule.tick(1);
         });
+    }
+
+    /**
+     * Advances to the next turn, or ends the night phase when all turns are done.
+     */
+    public void nextTurn() {
+        System.out.println(turns.size() + " turns total, currently at index " + currentTurnIndex);
+        if (currentTurnIndex >= turns.size()) {
+            onEnd();
+            return;
+        }
+
+        turns.forEach((turn) -> System.out.println("Turn: " + turn.getClass().getSimpleName()));
+
+        NightTurn turn = turns.get(currentTurnIndex);
+        currentTurnIndex++;
+        turn.onTurn();
     }
 
     private void applyBlindness() {
@@ -71,5 +91,6 @@ public class NightPhase extends GamePhase {
     @Override
     public void onEnd() {
         // switch to day
+        mineWolvesManager.setPhase(new DayPhase());
     }
 }

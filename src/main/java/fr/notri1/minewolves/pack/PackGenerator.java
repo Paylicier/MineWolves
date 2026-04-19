@@ -10,6 +10,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -23,6 +24,15 @@ public class PackGenerator {
             throw new IOException("pack.zip not found. Please generate it first.");
         }
         return sha1(new FileInputStream(OUTPUT_PATH.toFile()));
+    }
+
+    public static byte[] getIcon() throws IOException {
+        try (InputStream is = Objects.requireNonNull(PackGenerator.class.getResource(RESOURCE_PACK_DIR + "/pack.png")).openStream()) {
+            if (is == null) {
+                throw new IOException("icon.png not found in resources");
+            }
+            return is.readAllBytes();
+        }
     }
 
     /**

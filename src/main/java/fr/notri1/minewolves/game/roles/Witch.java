@@ -1,5 +1,7 @@
 package fr.notri1.minewolves.game.roles;
 
+import fr.notri1.minewolves.game.phases.turns.NightTurn;
+import fr.notri1.minewolves.game.phases.turns.WitchTurn;
 import net.kyori.adventure.key.Key;
 
 /**
@@ -41,6 +43,10 @@ public class Witch extends Role {
 
     public int getNightOrder() {
         return 3;
+    }
+
+    public NightTurn createNightTurn() {
+        return new WitchTurn(this);
     }
 }
 

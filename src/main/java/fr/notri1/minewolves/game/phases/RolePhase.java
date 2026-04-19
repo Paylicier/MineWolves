@@ -1,6 +1,7 @@
 package fr.notri1.minewolves.game.phases;
 
 import fr.notri1.minewolves.game.RoleSelection;
+import fr.notri1.minewolves.game.menus.RoleMenu;
 import fr.notri1.minewolves.game.roles.Role;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.timer.Scheduler;
@@ -30,7 +31,7 @@ public class RolePhase extends GamePhase {
         Scheduler scheduler = MinecraftServer.getSchedulerManager();
 
         instanceContainer.getPlayers().forEach(player -> {
-            fr.notri1.minewolves.game.menus.Role roleMenu = new fr.notri1.minewolves.game.menus.Role(mineWolvesManager.roleManager.getRole(player));
+            RoleMenu roleMenu = new RoleMenu(mineWolvesManager.roleManager.getRole(player));
             roleMenu.open(player);
             scheduler.buildTask(() -> {
                 roleMenu.close(player);
@@ -38,12 +39,12 @@ public class RolePhase extends GamePhase {
         });
 
         scheduler.buildTask(() -> {
-            mineWolvesManager.setPhase(new NightPhase());
+            onEnd();
         }).delay(TaskSchedule.seconds(5)).schedule();
     }
 
     @Override
     public void onEnd() {
-
+        mineWolvesManager.setPhase(new NightPhase());
     }
 }

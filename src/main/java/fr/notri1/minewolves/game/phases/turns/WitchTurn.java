@@ -1,26 +1,26 @@
 package fr.notri1.minewolves.game.phases.turns;
 
 import fr.notri1.minewolves.game.phases.NightPhase;
-import fr.notri1.minewolves.game.roles.Seer;
+import fr.notri1.minewolves.game.roles.Witch;
 
 import static fr.notri1.minewolves.MineWolves.mineWolvesManager;
 
-public class SeerTurn extends NightTurn {
+public class WitchTurn extends NightTurn {
 
-    private final Seer role;
+    private final Witch role;
 
-    public SeerTurn(Seer role) {
+    public WitchTurn(Witch role) {
         this.role = role;
     }
 
-
     @Override
     public void onTurn() {
-        //todo: open select menu
+        // todo: open potion menu
         role.getPlayers().forEach(player -> {
-            player.sendMessage("It's your turn to use your Seer ability! Select a player to inspect.");
+            player.sendMessage("It's your turn to use your Witch potions!");
         });
 
         ((NightPhase) mineWolvesManager.getPhase()).nextTurn();
     }
 }
+

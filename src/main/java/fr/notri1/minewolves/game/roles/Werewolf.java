@@ -1,5 +1,7 @@
 package fr.notri1.minewolves.game.roles;
 
+import fr.notri1.minewolves.game.phases.turns.NightTurn;
+import fr.notri1.minewolves.game.phases.turns.WerewolfTurn;
 import net.kyori.adventure.key.Key;
 import net.minestom.server.entity.Player;
 
@@ -54,6 +56,10 @@ public class Werewolf extends Role {
 
     public int getNightOrder() {
         return 2;
+    }
+
+    public NightTurn createNightTurn() {
+        return new WerewolfTurn(this);
     }
 }
 

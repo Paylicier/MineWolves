@@ -10,11 +10,11 @@ import net.minestom.server.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Role extends Menu {
+public class RoleMenu extends Menu {
 
     private final fr.notri1.minewolves.game.roles.Role role;
 
-    public Role(fr.notri1.minewolves.game.roles.Role role) {
+    public RoleMenu(fr.notri1.minewolves.game.roles.Role role) {
         this.role = role;
     }
 
@@ -49,7 +49,7 @@ public class Role extends Menu {
         elements.add(MenuElement.builder("name")
                 .position(0f, 0.6f)
                 .text(role.getDisplayName().decorate(TextDecoration.BOLD))
-                .scale(1.8f) // Légèrement plus grand que dans ta version
+                .scale(1.8f)
                 .build());
 
         // Role desc

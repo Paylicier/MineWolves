@@ -47,6 +47,7 @@ public class MineWolvesManager {
 
     public void setPhase(GamePhase phase) {
         this.currentPhase = phase;
+        System.out.println("[PHASE] New phase: " + phase.getClass().getSimpleName());
         phase.onStart();
     }
 

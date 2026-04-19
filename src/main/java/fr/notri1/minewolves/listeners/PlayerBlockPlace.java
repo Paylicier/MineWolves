@@ -16,7 +16,7 @@ public class PlayerBlockPlace implements EventListener<PlayerBlockPlaceEvent> {
     @Override
     public Result run(PlayerBlockPlaceEvent event) {
         final Player player = event.getPlayer();
-        event.setCancelled(true);
+        event.setCancelled(true); // a bit useless rn as the player is in adv
         player.sendActionBar(Component.translatable("minewolves.cannot_place").color(NamedTextColor.RED));
         return null;
     }

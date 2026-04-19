@@ -9,8 +9,11 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.entity.metadata.display.AbstractDisplayMeta;
 import net.minestom.server.entity.metadata.display.TextDisplayMeta;
 import net.minestom.server.instance.block.Block;
+import net.minestom.server.item.ItemStack;
+import net.minestom.server.item.Material;
 import net.minestom.server.network.packet.server.play.BlockChangePacket;
 import net.minestom.server.network.packet.server.play.CameraPacket;
+import net.minestom.server.network.packet.server.play.SetPlayerInventorySlotPacket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +53,8 @@ public abstract class Menu {
     // Active sessions per player
     private static final Map<UUID, MenuSession> activeSessions = new ConcurrentHashMap<>();
 
+    public List<MenuElement> elements;
+
     /**
      * Checks if the given player has any menu open.
      */
@@ -81,6 +86,9 @@ public abstract class Menu {
 
         // Return camera control to the player
         player.sendPacket(new CameraPacket(player.getEntityId()));
+
+        // give their hand back to the player
+        player.sendPacket(new SetPlayerInventorySlotPacket(4, ItemStack.AIR));
 
         // Remove the camera armor stand from the world
         session.cameraEntity.remove();
@@ -132,11 +140,18 @@ public abstract class Menu {
         // Make the player spectate the armor stand
         player.sendPacket(new CameraPacket(cameraEntity.getEntityId()));
 
+        // Set slot to middle
+        player.setHeldItemSlot((byte) 4);
+
+        // hide hand
+        player.sendPacket(new SetPlayerInventorySlotPacket(4, ItemStack.of(Material.PAPER).withItemModel("minecraft:air").withCustomName(Component.text(" "))));
+
         // Place client-side light blocks around the camera to illuminate the menu
         List<Vec> lightPositions = placeLightBlocks(player, cameraPos);
 
         // Build and spawn menu elements
         List<MenuElement> elements = buildElements(player);
+        this.elements = elements;
         List<Entity> displayEntities = new ArrayList<>();
 
         for (MenuElement element : elements) {
@@ -181,6 +196,24 @@ public abstract class Menu {
                 Entity entity = session.displayEntities.get(i);
                 TextDisplayMeta meta = (TextDisplayMeta) entity.getEntityMeta();
                 meta.setText(newText);
+                break;
+            }
+        }
+    }
+
+    public void updateElementScale(Player player, String elementId, float scaleMultiplier, int interpolationDuration) {
+        MenuSession session = activeSessions.get(player.getUuid());
+        if (session == null) return;
+
+        for (int i = 0; i < session.elements.size(); i++) {
+            MenuElement element = session.elements.get(i);
+            if (element.getId().equals(elementId)) {
+                Entity entity = session.displayEntities.get(i);
+                TextDisplayMeta meta = (TextDisplayMeta) entity.getEntityMeta();
+                meta.setTransformationInterpolationDuration(interpolationDuration);
+                meta.setTransformationInterpolationStartDelta(0);
+                float s = element.getScale() * scaleMultiplier;
+                meta.setScale(new Vec(s, s, s));
                 break;
             }
         }
@@ -373,6 +406,8 @@ public abstract class Menu {
         }
     }
 }
+
+
 
 
 

@@ -22,5 +22,6 @@
   "minewolves.role.witch.description": "You have two potions: one to heal, one to kill.",
   "minewolves.role.hunter.description": "When you die, you can shoot one player.",
   "minewolves.menu.roles.title": "You are",
-  "minewolves.menu.roles.footer": "Everyone, close your eyes."
+  "minewolves.menu.roles.footer": "Everyone, close your eyes.",
+  "minewolves.menu.interactable": "Use your scroll wheel to navigate and %s to submit."
 }

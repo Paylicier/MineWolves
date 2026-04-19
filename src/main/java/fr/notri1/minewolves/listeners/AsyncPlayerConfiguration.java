@@ -7,6 +7,7 @@ import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.coordinate.Pos;
+import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.EventListener;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
@@ -31,6 +32,7 @@ public class AsyncPlayerConfiguration implements EventListener<AsyncPlayerConfig
         if (mineWolvesManager.status != Status.WAITING) player.kick("Game already started");
         event.setSpawningInstance(instanceContainer);
         player.setRespawnPoint(new Pos(0, 40, 0));
+        player.setGameMode(GameMode.ADVENTURE);
         ResourcePackRequest request = null;
         try {
             request = ResourcePackRequest.resourcePackRequest()

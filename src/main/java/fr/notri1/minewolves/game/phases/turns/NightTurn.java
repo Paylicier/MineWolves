@@ -1,5 +1,5 @@
 package fr.notri1.minewolves.game.phases.turns;
 
 public abstract class NightTurn {
-    //todo
+    public abstract void onTurn();
 }

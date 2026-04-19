@@ -2,6 +2,7 @@ package fr.notri1.minewolves;
 
 import fr.notri1.minewolves.commands.debug.FakePlayersCommand;
 import fr.notri1.minewolves.commands.debug.RoleMenuCommand;
+import fr.notri1.minewolves.commands.debug.SeerMenuCommand;
 import fr.notri1.minewolves.commands.debug.StartCommand;
 import fr.notri1.minewolves.configuration.ConfigManager;
 import fr.notri1.minewolves.configuration.MineWolvesConfig;
@@ -56,9 +57,11 @@ public class MineWolves {
         }
 
         Listeners.init();
+
         MinecraftServer.getCommandManager().register(new StartCommand());
         MinecraftServer.getCommandManager().register(new RoleMenuCommand());
         MinecraftServer.getCommandManager().register(new FakePlayersCommand());
+        MinecraftServer.getCommandManager().register(new SeerMenuCommand());
 
         mineWolvesManager = new MineWolvesManager();
 
