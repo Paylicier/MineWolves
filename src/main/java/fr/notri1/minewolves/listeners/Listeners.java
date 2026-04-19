@@ -17,7 +17,8 @@ public final class Listeners {
                 .addListener(new PlayerBlockPlace())
                 .addListener(new PlayerFirstSpawn())
                 .addListener(new PlayerScroll())
-                .addListener(new ServerListPing());
+                .addListener(new ServerListPing())
+                .addListener(new Chat());
 
         globalEventHandler.addChild(entityNode);
     }

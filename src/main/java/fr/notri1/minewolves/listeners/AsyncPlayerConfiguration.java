@@ -29,10 +29,12 @@ public class AsyncPlayerConfiguration implements EventListener<AsyncPlayerConfig
     @Override
     public Result run(AsyncPlayerConfigurationEvent event) {
         final Player player = event.getPlayer();
+        System.out.println("Player " + player.getUsername() + " is configuring...");
         if (mineWolvesManager.status != Status.WAITING) player.kick("Game already started");
         event.setSpawningInstance(instanceContainer);
         player.setRespawnPoint(new Pos(0, 40, 0));
         player.setGameMode(GameMode.ADVENTURE);
+        if (player.getUsername().startsWith("bot")) return null; // mineflayer is broken w/ packs
         ResourcePackRequest request = null;
         try {
             request = ResourcePackRequest.resourcePackRequest()

@@ -4,42 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8ce7ca55-60bd-4638-b492-6c871b50a0c4" name="Changes" comment="feat: implement game phase management and role assignment">
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/commands/debug/SeerMenuCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/menus/InteractableMenu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/menus/SeerMenu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/phases/DayPhase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/phases/turns/WerewolfTurn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/phases/turns/WitchTurn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/listeners/Packet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/listeners/PlayerScroll.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/listeners/ServerListPing.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/pack/assets/minecraft/textures/gui/sprites/hud/experience_bar_background.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/pack/assets/minecraft/textures/gui/sprites/hud/food_empty.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/pack/assets/minecraft/textures/gui/sprites/hud/food_full.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/pack/assets/minecraft/textures/gui/sprites/hud/heart/container.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/pack/assets/minecraft/textures/gui/sprites/hud/heart/full.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/MineWolves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/MineWolves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/commands/debug/RoleMenuCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/commands/debug/RoleMenuCommand.java" afterDir="false" />
+    <list default="true" id="8ce7ca55-60bd-4638-b492-6c871b50a0c4" name="Changes" comment="feat: add interactable menus, and prob some things i don't remember">
+      <change afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/listeners/Chat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/MineWolvesManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/MineWolvesManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/menus/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/menus/Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/menus/MenuElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/menus/MenuElement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/menus/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/menus/RoleMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/phases/NightPhase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/phases/NightPhase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/phases/RolePhase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/phases/RolePhase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/phases/turns/NightTurn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/phases/turns/NightTurn.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/phases/turns/SeerTurn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/phases/turns/SeerTurn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/roles/Werewolf.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/roles/Werewolf.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/roles/Witch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/roles/Witch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/phases/turns/WerewolfTurn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/game/phases/turns/WerewolfTurn.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/listeners/AsyncPlayerConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/listeners/AsyncPlayerConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/listeners/Listeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/listeners/Listeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/listeners/PlayerBlockBreak.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/listeners/PlayerBlockBreak.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/listeners/PlayerBlockPlace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/listeners/PlayerBlockPlace.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/pack/PackGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/pack/PackGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/listeners/PlayerFirstSpawn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/notri1/minewolves/listeners/PlayerFirstSpawn.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/pack/assets/minewolves/lang/en_us.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/pack/assets/minewolves/lang/en_us.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -257,7 +231,7 @@
       <workItem from="1774899790009" duration="4763000" />
       <workItem from="1776454830102" duration="12391000" />
       <workItem from="1776609098065" duration="4386000" />
-      <workItem from="1776622994740" duration="520000" />
+      <workItem from="1776622994740" duration="7039000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -275,7 +249,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772922071716</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat: add interactable menus, and prob some things i don't remember">
+      <option name="closed" value="true" />
+      <created>1776623709586</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1776623709587</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -295,7 +277,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
     <MESSAGE value="feat: implement game phase management and role assignment" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: implement game phase management and role assignment" />
+    <MESSAGE value="feat: add interactable menus, and prob some things i don't remember" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add interactable menus, and prob some things i don't remember" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

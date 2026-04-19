@@ -1,6 +1,7 @@
 {
   "minewolves.cannot_break": "You cannot break this block...",
   "minewolves.cannot_place": "You cannot place this block here...",
+  "minewolves.cannot_chat": "You cannot chat right now...",
   "minewolves.game.starting_in": "The game will start in %s seconds!",
   "minewolves.game.started": "The game has started!",
   "minewolves.role.villager": "Villager",

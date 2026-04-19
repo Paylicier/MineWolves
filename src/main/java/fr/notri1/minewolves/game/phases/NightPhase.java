@@ -19,6 +19,7 @@ public class NightPhase extends GamePhase {
 
     private final List<NightTurn> turns;
     private int currentTurnIndex = 0;
+    public NightTurn currentTurn;
 
     public NightPhase() {
         turns = new ArrayList<>();
@@ -79,6 +80,7 @@ public class NightPhase extends GamePhase {
 
         NightTurn turn = turns.get(currentTurnIndex);
         currentTurnIndex++;
+        currentTurn = turn;
         turn.onTurn();
     }
 

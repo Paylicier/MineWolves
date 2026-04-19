@@ -8,6 +8,7 @@ import net.minestom.server.event.EventListener;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import org.jetbrains.annotations.NotNull;
 
+import static fr.notri1.minewolves.MineWolves.config;
 import static fr.notri1.minewolves.MineWolves.instanceContainer;
 
 public class PlayerFirstSpawn implements EventListener<PlayerSpawnEvent> {
@@ -18,15 +19,15 @@ public class PlayerFirstSpawn implements EventListener<PlayerSpawnEvent> {
 
     @Override
     public Result run(PlayerSpawnEvent event) {
+        System.out.println("Player " + event.getPlayer().getUsername() + " spawned: " + event.isFirstSpawn());
         if (!event.isFirstSpawn()) return null;
 
         final Player player = event.getPlayer();
 
-        instanceContainer.sendMessage(Component.translatable("multiplayer.player.joined", player.getName()).color(NamedTextColor.GREEN).append(Component.text(" [" + instanceContainer.getPlayers().size() + "/" + "69" + "]").color(NamedTextColor.GRAY)));
+        // [+] PLAYER [1/20]
+        instanceContainer.sendMessage(Component.text("[+] ").color(NamedTextColor.GREEN).append(Component.text(player.getUsername()).color(NamedTextColor.WHITE)).append(Component.text(" [" + instanceContainer.getPlayers().size() + "/" + config.getGame().getMaxPlayers() + "]").color(NamedTextColor.GRAY)));
 
-        if (instanceContainer.getPlayers().size() >= 2) { //todo: use numbers from config + make it so the game can start between min and max, idk how with the cooldown and things
-            MineWolves.mineWolvesManager.start();
-        }
+        MineWolves.mineWolvesManager.checkStart();
 
         return null;
     }
