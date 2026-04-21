@@ -2,27 +2,38 @@
   "minewolves.cannot_break": "You cannot break this block...",
   "minewolves.cannot_place": "You cannot place this block here...",
   "minewolves.cannot_chat": "You cannot chat right now...",
+
   "minewolves.game.starting_in": "The game will start in %s seconds!",
   "minewolves.game.started": "The game has started!",
+
   "minewolves.role.villager": "Villager",
+  "minewolves.role.villager.description": "You have no special ability. Use your wits to find the werewolves!",
+
   "minewolves.role.werewolf": "Werewolf",
-  "minewolves.role.seer": "Seer",
-  "minewolves.role.witch": "Witch",
-  "minewolves.role.hunter": "Hunter",
+  "minewolves.role.werewolf.description": "Each night, choose a villager to eliminate.\nTry to blend in during the day!",
   "minewolves.role.werewolf.wake_up": "You wake up... Choose a player to eliminate.",
+
+  "minewolves.role.seer": "Seer",
+  "minewolves.role.seer.description": "Each night, inspect a player to learn their role.",
   "minewolves.role.seer.wake_up": "You wake up... Choose a player to inspect.",
-  "minewolves.role.seer.inspect": "You inspected %s — their role is %s.",
+  "minewolves.role.seer.inspect": "You inspected %s, their role is %s.",
+
+  "minewolves.role.witch": "Witch",
+  "minewolves.role.witch.description": "You have two potions: one to heal, one to kill.",
   "minewolves.role.witch.wake_up": "You wake up... Will you use a potion tonight?",
   "minewolves.role.witch.heal_used": "You used your heal potion!",
   "minewolves.role.witch.kill_used": "You used your kill potion on %s!",
+  "minewolves.role.hunter": "Hunter",
+  "minewolves.role.hunter.description": "When you die, you can shoot one player.",
   "minewolves.role.hunter.shoot_prompt": "You have been eliminated! Choose a player to take down with you.",
   "minewolves.role.hunter.shot": "You shot %s!",
-  "minewolves.role.villager.description": "You have no special ability. Use your wits to find the werewolves!",
-  "minewolves.role.werewolf.description": "Each night, choose a villager to eliminate.\nTry to blend in during the day!",
-  "minewolves.role.seer.description": "Each night, inspect a player to learn their role.",
-  "minewolves.role.witch.description": "You have two potions: one to heal, one to kill.",
-  "minewolves.role.hunter.description": "When you die, you can shoot one player.",
   "minewolves.menu.roles.title": "You are",
   "minewolves.menu.roles.footer": "Everyone, close your eyes.",
-  "minewolves.menu.interactable": "Use your scroll wheel to navigate and %s to submit."
+  "minewolves.menu.interactable": "Use your scroll wheel to navigate and %s to submit.",
+  "minewolves.menu.countdown": "Time remaining: %s seconds",
+  "minewolves.menu.werewolf.title": "Choose your victim",
+  "minewolves.werewolf.vote": "%s voted for %s.",
+  "minewolves.werewolf.vote_result": "%s was eliminated by the werewolves!",
+  "minewolves.werewolf.tie": "The werewolves couldn't decide on a victim... No one was eliminated tonight.",
+  "minewolves.teammates": "Teammates:"
 }

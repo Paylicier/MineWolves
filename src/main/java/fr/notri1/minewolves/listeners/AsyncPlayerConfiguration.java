@@ -29,8 +29,10 @@ public class AsyncPlayerConfiguration implements EventListener<AsyncPlayerConfig
     @Override
     public Result run(AsyncPlayerConfigurationEvent event) {
         final Player player = event.getPlayer();
-        System.out.println("Player " + player.getUsername() + " is configuring...");
-        if (mineWolvesManager.status != Status.WAITING) player.kick("Game already started");
+        if (mineWolvesManager.status != Status.WAITING) {
+            System.out.println("Player " + player.getUsername() + " tried to join but the game already started");
+            player.kick("Game already started");
+        }
         event.setSpawningInstance(instanceContainer);
         player.setRespawnPoint(new Pos(0, 40, 0));
         player.setGameMode(GameMode.ADVENTURE);

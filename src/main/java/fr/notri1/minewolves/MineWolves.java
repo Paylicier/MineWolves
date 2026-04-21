@@ -1,6 +1,5 @@
 package fr.notri1.minewolves;
 
-import fr.notri1.minewolves.commands.debug.FakePlayersCommand;
 import fr.notri1.minewolves.commands.debug.RoleMenuCommand;
 import fr.notri1.minewolves.commands.debug.SeerMenuCommand;
 import fr.notri1.minewolves.commands.debug.StartCommand;
@@ -60,7 +59,6 @@ public class MineWolves {
 
         MinecraftServer.getCommandManager().register(new StartCommand());
         MinecraftServer.getCommandManager().register(new RoleMenuCommand());
-        MinecraftServer.getCommandManager().register(new FakePlayersCommand());
         MinecraftServer.getCommandManager().register(new SeerMenuCommand());
 
         mineWolvesManager = new MineWolvesManager();

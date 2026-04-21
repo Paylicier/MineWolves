@@ -3,7 +3,7 @@
     {
       "type": "bitmap",
       "file": "minewolves:roles/wolf.png",
-      "ascent": -16,
+      "ascent": -10,
       "height": 64,
       "chars": [
         "W"

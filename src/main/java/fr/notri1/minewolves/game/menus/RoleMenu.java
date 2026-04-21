@@ -39,7 +39,7 @@ public class RoleMenu extends Menu {
 
         // Role Icon
         elements.add(MenuElement.builder("icon")
-                .position(0f, -1.8f)
+                .position(0f, -1.6f)
                 .text(Component.text(role.getIcon())
                         .font(Key.key("minewolves", "roles")))
                 .scale(2f)

@@ -73,14 +73,15 @@ public class MineWolvesConfig {
                 List.of(19f, -47f, 41f),
                 List.of(24f, -47f, 38f),
                 List.of(16f, -47f, 38f),
-                List.of(15f, -47f, 38f),
                 List.of(18f, -47.5f, 37f),
                 List.of(22f, -47.5f, 35f),
-                List.of(21f, -47.5f, 48f) //todo: add more (-> 18)
+                List.of(21f, -47.5f, 38f),
+                List.of(22f, -47f, 32f),
+                List.of(15f, -47f, 36f)
+                //todo: add more (-> 18)
         );
 
-        private List<Float> menuLocation = List.of(1f, -48f, 16f, 90f, 0f);
-
+        private List<Float> menuLocation = List.of(1f, -40f, 16f, 90f, 0f);
 
         public int getMinPlayers() {
             return minPlayers;

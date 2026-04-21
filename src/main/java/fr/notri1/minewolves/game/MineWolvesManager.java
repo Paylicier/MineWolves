@@ -11,6 +11,7 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EntityType;
+import net.minestom.server.entity.Player;
 import net.minestom.server.timer.Task;
 import net.minestom.server.timer.TaskSchedule;
 
@@ -23,29 +24,33 @@ import static fr.notri1.minewolves.MineWolves.instanceContainer;
 public class MineWolvesManager {
     public Status status = Status.WAITING;
     public RoleManager roleManager = new RoleManager();
-    private int fakePlayerCount = 0;
     private GamePhase currentPhase;
+
+    private List<Player> playersToEliminate = new ArrayList<>();
 
     private Task countdownTask;
     private int countdown = -1;
 
-    public int getFakePlayerCount() {
-        return fakePlayerCount;
-    }
-
-    public void setFakePlayerCount(int count) {
-        this.fakePlayerCount = count;
-    }
-
-    /**
-     * Returns the effective player count (real + fake) for game logic.
-     */
-    public int getEffectivePlayerCount() {
-        return instanceContainer.getPlayers().size() + fakePlayerCount;
-    }
-
     public GamePhase getPhase() {
         return this.currentPhase;
+    }
+
+    public List<Player> getPlayersToEliminate() {
+        return playersToEliminate;
+    }
+
+    public void addPlayerToEliminate(Player player) {
+        if (!playersToEliminate.contains(player)) {
+            playersToEliminate.add(player);
+        }
+    }
+
+    public void clearPlayersToEliminate() {
+        playersToEliminate.clear();
+    }
+
+    public void removePlayerToEliminate(Player player) {
+        playersToEliminate.remove(player);
     }
 
     public void setPhase(GamePhase phase) {
@@ -96,12 +101,11 @@ public class MineWolvesManager {
 
         if (countdown == -1 || targetCountdown < countdown) {
             countdown = targetCountdown;
-            instanceContainer.sendMessage(Component.text("Game starting in " + countdown + " seconds!").color(NamedTextColor.YELLOW));
         }
     }
 
     private void tickCountdown() {
-        if (countdown <= 0) {
+        if (countdown <= 0 || status == Status.IN_GAME) {
             countdownTask.cancel();
             countdownTask = null;
             startGame();

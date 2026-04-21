@@ -13,12 +13,9 @@ import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 import net.minestom.server.network.packet.server.play.BlockChangePacket;
 import net.minestom.server.network.packet.server.play.CameraPacket;
-import net.minestom.server.network.packet.server.play.SetPlayerInventorySlotPacket;
+import net.minestom.server.network.packet.server.play.WindowItemsPacket;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static fr.notri1.minewolves.MineWolves.config;
@@ -87,8 +84,8 @@ public abstract class Menu {
         // Return camera control to the player
         player.sendPacket(new CameraPacket(player.getEntityId()));
 
-        // give their hand back to the player
-        player.sendPacket(new SetPlayerInventorySlotPacket(4, ItemStack.AIR));
+        // update player inv
+        player.getInventory().update();
 
         // Remove the camera armor stand from the world
         session.cameraEntity.remove();
@@ -142,9 +139,16 @@ public abstract class Menu {
 
         // Set slot to middle
         player.setHeldItemSlot((byte) 4);
+        List<ItemStack> protocolItems = Collections.nCopies(46, ItemStack.of(Material.PAPER).withItemModel("minecraft:air").withCustomName(Component.text(" ")));
 
-        // hide hand
-        player.sendPacket(new SetPlayerInventorySlotPacket(4, ItemStack.of(Material.PAPER).withItemModel("minecraft:air").withCustomName(Component.text(" "))));
+        WindowItemsPacket hideHandPacket = new WindowItemsPacket(
+                (byte) 0,
+                0,
+                protocolItems,
+                ItemStack.AIR
+        );
+
+        player.sendPacket(hideHandPacket);
 
         // Place client-side light blocks around the camera to illuminate the menu
         List<Vec> lightPositions = placeLightBlocks(player, cameraPos);

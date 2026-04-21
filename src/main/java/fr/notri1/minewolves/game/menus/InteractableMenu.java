@@ -1,5 +1,7 @@
 package fr.notri1.minewolves.game.menus;
 
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.MinecraftServer;
@@ -45,6 +47,7 @@ public abstract class InteractableMenu extends Menu {
 
         int maxElements = interactableElements.size();
 
+
         MenuElement oldEl = interactableElements.get(currentIndex);
         updateElementScale(player, oldEl.getId(), 1.0f, 1);
 
@@ -53,5 +56,22 @@ public abstract class InteractableMenu extends Menu {
 
         MenuElement newEl = interactableElements.get(currentIndex);
         updateElementScale(player, newEl.getId(), 1.2f, 1);
+    }
+
+    public void handleInteract(Player player) {
+        List<MenuElement> interactableElements = this.elements.stream().filter(MenuElement::isInteractable).toList();
+        if (interactableElements.isEmpty()) return;
+
+        MenuElement element = interactableElements.get(currentIndex);
+
+        player.sendMessage(Component.text("Clicked on element " + element.getId() + ", index: " + currentIndex));
+        player.playSound(Sound.sound(Key.key("minecraft", "ui.button.click"), Sound.Source.UI, 1f, 1f));
+
+        Runnable onClick = element.getOnClick();
+        if (onClick == null) {
+            player.sendMessage(Component.text("uh, this button doesn't do anything (too lazy to translate this)").color(NamedTextColor.RED));
+            return;
+        }
+        element.getOnClick().run();
     }
 }

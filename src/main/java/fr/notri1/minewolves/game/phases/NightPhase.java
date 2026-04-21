@@ -1,6 +1,7 @@
 package fr.notri1.minewolves.game.phases;
 
 import fr.notri1.minewolves.game.phases.turns.NightTurn;
+import fr.notri1.minewolves.game.roles.Role;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.potion.Potion;
@@ -24,11 +25,19 @@ public class NightPhase extends GamePhase {
     public NightPhase() {
         turns = new ArrayList<>();
 
+        for (Role role : mineWolvesManager.roleManager.getAliveRoles()) {
+            System.out.println("Role: " + role.getClass().getSimpleName() + ", night order: " + role.getNightOrder());
+        }
+
         mineWolvesManager.roleManager.getAliveRoles().stream()
                 .filter(role -> role.getNightOrder() >= 0)
                 .filter(role -> role.createNightTurn() != null)
                 .sorted(Comparator.comparingInt(role -> role.getNightOrder()))
                 .forEach(role -> turns.add(role.createNightTurn()));
+
+        for (NightTurn turn : turns) {
+            System.out.println("Added turn " + turn.getClass().getSimpleName());
+        }
     }
 
     @Override
