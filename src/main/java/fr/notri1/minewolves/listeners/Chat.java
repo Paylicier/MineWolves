@@ -10,6 +10,7 @@ import fr.notri1.minewolves.game.roles.Team;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.EventListener;
 import net.minestom.server.event.player.PlayerChatEvent;
@@ -27,12 +28,19 @@ public class Chat implements EventListener<PlayerChatEvent> {
     public Result run(PlayerChatEvent event) {
         Player player = event.getPlayer();
         GamePhase phase = mineWolvesManager.getPhase();
+        if ((mineWolvesManager.status == Status.IN_GAME) && mineWolvesManager.roleManager.getRole(player) == null) {
+            // spec cannot chat
+            event.setCancelled(true);
+            Audience specAudience = Audience.audience(player.getInstance().getPlayers().stream().filter(p -> p.getGameMode().equals(GameMode.SPECTATOR)).toArray(Player[]::new));
+            specAudience.sendMessage(Component.translatable("minewolves.spectator").color(NamedTextColor.GRAY).append(Component.text(" | ").color(NamedTextColor.GRAY)).append(Component.text(player.getUsername()).color(NamedTextColor.WHITE)).append(Component.text(": ").color(NamedTextColor.GRAY)).append(Component.text(event.getRawMessage()).color(NamedTextColor.WHITE)));
+            return Result.SUCCESS;
+        }
         if ((mineWolvesManager.status == Status.IN_GAME) && !(phase instanceof DayPhase)) {
             event.setCancelled(true);
             // if player is a wolf, allow them to chat with other wolves
             Role playerRole = mineWolvesManager.roleManager.getRole(player);
             if (playerRole != null && (playerRole.getTeam() == Team.WEREWOLVES) && phase instanceof NightPhase) {
-                if (((NightPhase) phase).currentTurn instanceof WerewolfTurn) {
+                if (((NightPhase) phase).currentTurns.stream().anyMatch(t -> t instanceof WerewolfTurn)) {
 
                     // maybe add an option in config to allow/disallow specs to see wolf chat
 
@@ -43,6 +51,8 @@ public class Chat implements EventListener<PlayerChatEvent> {
                     wolfAudience.sendMessage(Component.translatable("minewolves.role.werewolf").color(Team.WEREWOLVES.getColor()).append(Component.text(" | ").color(NamedTextColor.GRAY)).append(Component.text(player.getUsername()).color(NamedTextColor.WHITE)).append(Component.text(": ").color(NamedTextColor.GRAY)).append(Component.text(event.getRawMessage()).color(NamedTextColor.WHITE)));
 
                     //todo: spec
+                    Audience specAudience = Audience.audience(player.getInstance().getPlayers().stream().filter(p -> p.getGameMode().equals(GameMode.SPECTATOR)).toArray(Player[]::new));
+                    specAudience.sendMessage(Component.translatable("minewolves.role.werewolf").color(Team.WEREWOLVES.getColor()).append(Component.text(" | ").color(NamedTextColor.GRAY)).append(Component.text(player.getUsername()).color(NamedTextColor.WHITE)).append(Component.text(": ").color(NamedTextColor.GRAY)).append(Component.text(event.getRawMessage()).color(NamedTextColor.WHITE)));
 
                     //todo: potite fille (forgot how it's called in english)
 

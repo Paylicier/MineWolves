@@ -43,27 +43,22 @@ public class RoleSelection {
     public static List<Role> getRolesForPlayerCount(int playerCount) {
         List<Role> selectedRoles = new ArrayList<>();
 
-        // --- Step 1: Calculate the ideal werewolf count (roughly 1/3 of players, at least 1) ---
         int targetWerewolves = Math.max(1, Math.round((float) playerCount / 3));
 
-        // --- Step 2: Add all mandatory roles (minPlayers > 0) ---
         for (Role role : ALL_ROLES) {
             for (int i = 0; i < role.getMinPlayers(); i++) {
                 selectedRoles.add(role);
             }
         }
 
-        // Validate that we have enough players for mandatory roles
         if (selectedRoles.size() > playerCount) {
             throw new IllegalArgumentException(
                     "Not enough players (" + playerCount + ") to fill mandatory roles (" + selectedRoles.size() + ")");
         }
 
-        // --- Step 3: Count current team distribution ---
         int currentWerewolves = countByTeam(selectedRoles, Team.WEREWOLVES);
         int remainingSlots = playerCount - selectedRoles.size();
 
-        // --- Step 4: Fill werewolf slots up to target (respecting maxPlayers) ---
         List<Role> werewolvesRoles = getRolesByTeam(Team.WEREWOLVES);
         Collections.shuffle(werewolvesRoles); // nb: a bit useless rn since we only have one werewolf role, but futureproof ykyk
 
@@ -80,7 +75,6 @@ public class RoleSelection {
             }
         }
 
-        // --- Step 5: Fill special village roles (non-Villager) before plain Villagers ---
         List<Role> specialVillageRoles = new ArrayList<>(getRolesByTeam(Team.VILLAGE).stream()
                 .filter(r -> !(r instanceof Villager))
                 .toList());
@@ -99,18 +93,15 @@ public class RoleSelection {
             }
         }
 
-        // --- Step 6: Fill remaining slots with Villagers ---
         Role villager = ALL_ROLES.stream()
                 .filter(r -> r instanceof Villager)
                 .findFirst()
                 .orElseThrow();
 
-        // Villager has a maxPlayers cap; if we still need more, we allow overflow for Villagers
         for (int i = 0; i < remainingSlots; i++) {
             selectedRoles.add(villager);
         }
 
-        // --- Step 7: Shuffle so roles are randomly distributed ---
         Collections.shuffle(selectedRoles);
 
         return selectedRoles;

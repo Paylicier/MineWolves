@@ -11,8 +11,6 @@ import net.minestom.server.entity.Player;
  */
 public class Werewolf extends Role {
 
-    private Player target;
-
     @Override
     public String getKey() {
         return "werewolf";
@@ -43,19 +41,9 @@ public class Werewolf extends Role {
         return Team.WEREWOLVES;
     }
 
-    public Player getTarget() {
-        return target;
-    }
-
-    /**
-     * Sets the player targeted for elimination this night.
-     */
-    public void setTarget(Player target) {
-        this.target = target;
-    }
 
     public int getNightOrder() {
-        return 2;
+        return 1;
     }
 
     public NightTurn createNightTurn() {

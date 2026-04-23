@@ -50,7 +50,6 @@ public class WerewolfTurn extends NightTurn {
 
                 Player eliminatedPlayer = null;
 
-                if (!votes.isEmpty()) {
                     Map<UUID, Long> voteCounts = votes.values().stream()
                             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
@@ -78,7 +77,6 @@ public class WerewolfTurn extends NightTurn {
                                 .append(Component.text(" | ").color(NamedTextColor.GRAY))
                                 .append(Component.translatable("minewolves.werewolf.tie").color(NamedTextColor.WHITE)));
                     }
-                }
 
                 ((NightPhase) mineWolvesManager.getPhase()).nextTurn();
                 return TaskSchedule.stop();

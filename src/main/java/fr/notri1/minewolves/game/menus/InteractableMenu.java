@@ -64,7 +64,6 @@ public abstract class InteractableMenu extends Menu {
 
         MenuElement element = interactableElements.get(currentIndex);
 
-        player.sendMessage(Component.text("Clicked on element " + element.getId() + ", index: " + currentIndex));
         player.playSound(Sound.sound(Key.key("minecraft", "ui.button.click"), Sound.Source.UI, 1f, 1f));
 
         Runnable onClick = element.getOnClick();

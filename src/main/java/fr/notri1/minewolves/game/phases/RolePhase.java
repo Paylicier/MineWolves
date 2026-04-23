@@ -28,8 +28,8 @@ public class RolePhase extends GamePhase {
         List<Role> roleSelection = RoleSelection.getRolesForPlayerCount(instanceContainer.getPlayers().size());
 
         instanceContainer.getPlayers().forEach(player -> {
-//            Role pRole = roleSelection.getFirst();
-            Role pRole = (player.getUsername().equals("ri1_") || player.getUsername().equals("Paylicier")) ? roleSelection.stream().filter(role -> role instanceof Werewolf).findFirst().orElse(roleSelection.getFirst()) : roleSelection.getFirst();
+            Role pRole = roleSelection.getFirst();
+//            Role pRole = (player.getUsername().equals("ri1_") || player.getUsername().equals("Paylicier")) ? roleSelection.stream().filter(role -> role instanceof Werewolf).findFirst().orElse(roleSelection.getFirst()) : roleSelection.getFirst();
             mineWolvesManager.roleManager.assignRole(player, pRole);
             System.out.println("Assigned role " + roleSelection.getFirst().getClass().getSimpleName() + " to player " + player.getUsername());
             roleSelection.removeFirst();

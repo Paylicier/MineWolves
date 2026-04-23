@@ -61,7 +61,7 @@ public class MineWolvesConfig {
 
     @ConfigSerializable
     public static class GameConfig {
-        private int minPlayers = 3;
+        private int minPlayers = 4;
         private int maxPlayers = 18;
         private int countdownSeconds = 5;
         private List<List<Float>> sitPoints = List.of(

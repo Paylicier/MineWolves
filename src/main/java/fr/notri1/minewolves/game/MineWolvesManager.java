@@ -11,15 +11,17 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EntityType;
+import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.timer.Task;
 import net.minestom.server.timer.TaskSchedule;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static fr.notri1.minewolves.MineWolves.config;
-import static fr.notri1.minewolves.MineWolves.instanceContainer;
+import static fr.notri1.minewolves.MineWolves.*;
 
 public class MineWolvesManager {
     public Status status = Status.WAITING;
@@ -27,6 +29,11 @@ public class MineWolvesManager {
     private GamePhase currentPhase;
 
     private List<Player> playersToEliminate = new ArrayList<>();
+
+    private Map<Player, Entity> seats = new java.util.HashMap<>();
+
+    private int dayCount = 0;
+    private Player mayor = null;
 
     private Task countdownTask;
     private int countdown = -1;
@@ -53,6 +60,21 @@ public class MineWolvesManager {
         playersToEliminate.remove(player);
     }
 
+    public int getDayCount() {
+        return dayCount;
+    }
+
+    public void incrementDayCount() {
+        dayCount++;
+    }
+
+    public void setMayor(Player player) {
+        mayor = player;
+    }
+    public Player getMayor() {
+        return mayor;
+    }
+
     public void setPhase(GamePhase phase) {
         this.currentPhase = phase;
         System.out.println("[PHASE] New phase: " + phase.getClass().getSimpleName());
@@ -69,7 +91,7 @@ public class MineWolvesManager {
                 countdownTask.cancel();
                 countdownTask = null;
                 countdown = -1;
-                instanceContainer.sendMessage(Component.text("Not enough players anymore, countdown stopped.").color(NamedTextColor.RED));
+                instanceContainer.sendMessage(Component.translatable("minewolves.game.cancelled").color(NamedTextColor.RED));
             }
             return;
         }
@@ -83,6 +105,20 @@ public class MineWolvesManager {
                         .schedule();
             }
         }
+    }
+
+    public void eliminatePlayer(Player player) {
+        if(status != Status.IN_GAME) return;
+        if (roleManager.getRole(player) == null) return;
+        mineWolvesManager.roleManager.removeRole(player);
+        if (mineWolvesManager.getMayor() != null && mineWolvesManager.getMayor().equals(player)) {
+            mineWolvesManager.setMayor(null);
+        }
+        if(!player.isOnline()) return;
+        player.setGameMode(GameMode.SPECTATOR);
+        player.setAutoViewable(false);
+        player.getViewers().forEach(p -> player.removeViewer(p));
+        mineWolvesManager.unSitPlayer(player);
     }
 
     private void updateCountdown(int players, int min, int max) {
@@ -119,20 +155,28 @@ public class MineWolvesManager {
         countdown--;
     }
 
-    public boolean startGame() {
-        if (status != Status.STARTING && status != Status.WAITING) return false;
+    public void startGame() {
+        if (status != Status.STARTING && status != Status.WAITING) return;
         status = Status.IN_GAME;
 
         instanceContainer.sendMessage(Component.translatable("minewolves.game.started").color(NamedTextColor.GREEN));
         System.out.println("Game started!");
         sitPlayers();
         setPhase(new RolePhase());
-
-        return true;
     }
 
-    public boolean start() {
-        return startGame();
+    public void endGame() {
+        if(status != Status.IN_GAME) return;
+        mineWolvesManager.status = Status.ENDING;
+
+        MinecraftServer.getSchedulerManager().buildTask(() -> {
+            instanceContainer.sendMessage(Component.translatable("minewolves.restarting").color(NamedTextColor.RED));
+        }).delay(Duration.ofSeconds(20)).schedule();
+
+        MinecraftServer.getSchedulerManager().buildTask(() -> {
+            instanceContainer.getPlayers().forEach(p -> p.kick("Game ended, server is restarting..."));
+            MinecraftServer.stopCleanly();
+        }).delay(Duration.ofSeconds(25)).schedule();
     }
 
     private void sitPlayers() {
@@ -146,8 +190,18 @@ public class MineWolvesManager {
             seat.addPassenger(player);
 
             //player.teleport(new Pos(sitPoints.getFirst().get(0).doubleValue(), sitPoints.getFirst().get(1).doubleValue(), sitPoints.getFirst().get(2).doubleValue()));
-
+            seats.put(player, seat);
             sitPoints.removeFirst();
         });
+    }
+
+    public void unSitPlayer(Player p) {
+        Entity seat = seats.get(p);
+        if (seat != null) {
+            if (!seat.getPassengers().contains(p)) return;
+            seat.removePassenger(p);
+            seat.remove();
+            seats.remove(p);
+        }
     }
 }

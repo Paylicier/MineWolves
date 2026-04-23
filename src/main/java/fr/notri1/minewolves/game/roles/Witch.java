@@ -42,7 +42,7 @@ public class Witch extends Role {
     }
 
     public int getNightOrder() {
-        return 3;
+        return 2;
     }
 
     public NightTurn createNightTurn() {

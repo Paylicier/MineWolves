@@ -5,6 +5,7 @@
 
   "minewolves.game.starting_in": "The game will start in %s seconds!",
   "minewolves.game.started": "The game has started!",
+  "minewolves.game.cancelled": "Not enough players to start the game!",
 
   "minewolves.role.villager": "Villager",
   "minewolves.role.villager.description": "You have no special ability. Use your wits to find the werewolves!",
@@ -32,8 +33,28 @@
   "minewolves.menu.interactable": "Use your scroll wheel to navigate and %s to submit.",
   "minewolves.menu.countdown": "Time remaining: %s seconds",
   "minewolves.menu.werewolf.title": "Choose your victim",
+  "minewolves.menu.mayor_election.title": "Choose the mayor",
+  "minewolves.menu.mayor_election.subtitle": "Pick the player who will lead the village.",
+  "minewolves.menu.elimination_vote.title": "Village Council Vote",
   "minewolves.werewolf.vote": "%s voted for %s.",
-  "minewolves.werewolf.vote_result": "%s was eliminated by the werewolves!",
+  "minewolves.werewolf.vote_result": "The werewolves decided to devour %s!",
   "minewolves.werewolf.tie": "The werewolves couldn't decide on a victim... No one was eliminated tonight.",
-  "minewolves.teammates": "Teammates:"
+  "minewolves.teammates": "Teammates:",
+  "minewolves.eliminated.leave": "%s left the game, they were a %s.",
+  "minewolves.eliminated.night": "The sun is up, but %s never made it... They were a %s.",
+  "minewolves.eliminated.day": "The village council decided to lynch %s, they were a %s.",
+  "minewolves.day.start": "The sun rises on the village...",
+  "minewolves.game.win": "The %s have won the game!",
+  "minewolves.day.killed": "%s was killed during the night! They were a %s",
+  "minewolves.day.mayor.start": "The village is holding an election to choose a mayor! The mayor will have 2 votes during the council vote. ",
+  "minewolves.day.mayor.elected": "%s was elected mayor!",
+  "minewolves.day.mayor.tie": "The election resulted in a tie! No mayor was elected.",
+  "minewolves.day.kill.start": "Who should be eliminated? Cast your vote!",
+  "minewolves.day.kill.eliminated": "%s was eliminated!",
+  "minewolves.day.killed.village": "%s was killed by the village! They were a %s",
+  "minewolves.day.kill.tie": "The vote resulted in a tie! No one was eliminated today.",
+  "minewolves.day.kill.no_vote": "No one was voted to be eliminated.",
+  "minewolves.night.start": "Night falls over the village... go to sleep.",
+  "minewolves.spectator": "Spectator",
+  "minewolves.restarting": "The server is restarting soon..."
 }

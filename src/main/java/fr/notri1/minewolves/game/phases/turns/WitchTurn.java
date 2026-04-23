@@ -2,6 +2,9 @@ package fr.notri1.minewolves.game.phases.turns;
 
 import fr.notri1.minewolves.game.phases.NightPhase;
 import fr.notri1.minewolves.game.roles.Witch;
+import net.minestom.server.MinecraftServer;
+
+import java.time.Duration;
 
 import static fr.notri1.minewolves.MineWolves.mineWolvesManager;
 
@@ -20,7 +23,10 @@ public class WitchTurn extends NightTurn {
             player.sendMessage("It's your turn to use your Witch potions!");
         });
 
-        ((NightPhase) mineWolvesManager.getPhase()).nextTurn();
+        MinecraftServer.getSchedulerManager().buildTask(() -> {
+
+            ((NightPhase) mineWolvesManager.getPhase()).nextTurn();
+        }).delay(Duration.ofSeconds(5)).schedule();
     }
 }
 

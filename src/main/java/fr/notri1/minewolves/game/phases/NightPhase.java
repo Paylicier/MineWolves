@@ -9,8 +9,9 @@ import net.minestom.server.potion.PotionEffect;
 import net.minestom.server.timer.TaskSchedule;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static fr.notri1.minewolves.MineWolves.instanceContainer;
 import static fr.notri1.minewolves.MineWolves.mineWolvesManager;
@@ -18,54 +19,53 @@ import static fr.notri1.minewolves.pack.LocalizationUtils.getLocalizedSound;
 
 public class NightPhase extends GamePhase {
 
-    private final List<NightTurn> turns;
-    private int currentTurnIndex = 0;
-    public NightTurn currentTurn;
+    private final List<List<NightTurn>> groupedTurns;
+    private int currentGroupIndex = 0;
+
+    private int completedTurnsInCurrentGroup = 0;
+
+    public List<NightTurn> currentTurns;
 
     public NightPhase() {
-        turns = new ArrayList<>();
+        this.groupedTurns = new ArrayList<>();
 
-        for (Role role : mineWolvesManager.roleManager.getAliveRoles()) {
-            System.out.println("Role: " + role.getClass().getSimpleName() + ", night order: " + role.getNightOrder());
-        }
-
-        mineWolvesManager.roleManager.getAliveRoles().stream()
+        Map<Integer, List<Role>> rolesByOrder = mineWolvesManager.roleManager.getAliveRoles().stream()
                 .filter(role -> role.getNightOrder() >= 0)
                 .filter(role -> role.createNightTurn() != null)
-                .sorted(Comparator.comparingInt(role -> role.getNightOrder()))
-                .forEach(role -> turns.add(role.createNightTurn()));
+                .collect(Collectors.groupingBy(Role::getNightOrder));
 
-        for (NightTurn turn : turns) {
-            System.out.println("Added turn " + turn.getClass().getSimpleName());
-        }
+        rolesByOrder.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .forEach(entry -> {
+                    List<NightTurn> group = entry.getValue().stream()
+                            .map(Role::createNightTurn)
+                            .toList();
+                    groupedTurns.add(group);
+                });
+
+        System.out.println(groupedTurns.size() + " groups for this night.");
     }
 
     @Override
     public void onStart() {
-        instanceContainer.sendMessage(Component.text("Rompiche"));
+        instanceContainer.sendMessage(Component.translatable("minewolves.night.start"));
 
-        // set time to noon
         instanceContainer.setTime(6000);
 
-        // narrator
         instanceContainer.getPlayers().forEach(player -> {
             player.playSound(getLocalizedSound("minewolves", "narrator.night_falls", player));
         });
 
-        // animation
-
         final int targetTime = 18000;
-        final int increment = 37; // approx 16 sec (= voice line duration)
+        final int increment = 37;
 
         MinecraftServer.getSchedulerManager().submitTask(() -> {
             long currentTime = instanceContainer.getTime();
 
             if (currentTime >= targetTime) {
                 instanceContainer.setTime(targetTime);
-
                 applyBlindness();
 
-                // All animations done — start the first turn
                 nextTurn();
                 return TaskSchedule.stop();
             }
@@ -75,22 +75,29 @@ public class NightPhase extends GamePhase {
         });
     }
 
-    /**
-     * Advances to the next turn, or ends the night phase when all turns are done.
-     */
     public void nextTurn() {
-        System.out.println(turns.size() + " turns total, currently at index " + currentTurnIndex);
-        if (currentTurnIndex >= turns.size()) {
+        if (currentTurns != null && completedTurnsInCurrentGroup < currentTurns.size()) {
+            completedTurnsInCurrentGroup++;
+
+            if (completedTurnsInCurrentGroup < currentTurns.size()) {
+                return;
+            }
+        }
+
+        System.out.println(groupedTurns.size() + " groups total, current: " + currentGroupIndex);
+        if (currentGroupIndex >= groupedTurns.size()) {
             onEnd();
             return;
         }
 
-        turns.forEach((turn) -> System.out.println("Turn: " + turn.getClass().getSimpleName()));
+        currentTurns = groupedTurns.get(currentGroupIndex);
+        currentGroupIndex++;
+        completedTurnsInCurrentGroup = 0;
 
-        NightTurn turn = turns.get(currentTurnIndex);
-        currentTurnIndex++;
-        currentTurn = turn;
-        turn.onTurn();
+        for (NightTurn turn : currentTurns) {
+            System.out.println("Turn : " + turn.getClass().getSimpleName());
+            turn.onTurn();
+        }
     }
 
     private void applyBlindness() {
@@ -101,7 +108,6 @@ public class NightPhase extends GamePhase {
 
     @Override
     public void onEnd() {
-        // switch to day
         mineWolvesManager.setPhase(new DayPhase());
     }
 }

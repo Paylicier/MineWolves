@@ -9,12 +9,11 @@ public class MenuElement {
     private final String id;
     private final float x;
     private final float y;
-    private final Component text; // Peut être null pour un pur mannequin
+    private final Component text;
     private final float scale;
     private final int backgroundColor; // ARGB
     private final Runnable onClick;
 
-    // Nouveaux champs pour les mannequins
     private final EntityType entityType;
     private final PlayerSkin skin;
     private final boolean isInteractable;

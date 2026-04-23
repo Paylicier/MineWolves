@@ -43,9 +43,6 @@ public class RoleManager {
                 .filter(p -> p != null)
                 .toList();
 
-//        String names = teamPlayers.stream().map(Player::getUsername).collect(Collectors.joining("\n"));
-        // make a component with the names, each with a different color (incrementing the hue for each player)
-
         TranslatableComponent titleC = Component.translatable("minewolves.teammates").color(team.getColor()).decorate(TextDecoration.BOLD).shadowColor(ShadowColor.shadowColor(0, 0, 0, 0));
         Component component = Component.empty();
         component = component.append(Component.text("\uF806".repeat(22)).font(Key.key("minewolves", "roles")));

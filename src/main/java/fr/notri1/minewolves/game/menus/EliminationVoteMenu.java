@@ -1,7 +1,6 @@
 package fr.notri1.minewolves.game.menus;
 
-import fr.notri1.minewolves.game.phases.GamePhase;
-import fr.notri1.minewolves.game.phases.turns.WerewolfTurn;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -12,26 +11,33 @@ import net.minestom.server.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.BiConsumer;
 
 import static fr.notri1.minewolves.MineWolves.mineWolvesManager;
 
-public class WolfMenu extends InteractableMenu {
+public class EliminationVoteMenu extends InteractableMenu {
 
-    private final fr.notri1.minewolves.game.roles.Role role;
+    private final BiConsumer<Player, Player> voteHandler;
 
-    public WolfMenu(fr.notri1.minewolves.game.roles.Role role) {
-        this.role = role;
+    public EliminationVoteMenu(BiConsumer<Player, Player> voteHandler) {
+        this.voteHandler = Objects.requireNonNull(voteHandler, "voteHandler");
     }
 
     public void open(Player player) {
+        player.playSound(Sound.sound(Key.key("block.note_block.bell"), Sound.Source.MASTER, 1f, 1f));
         super.open(player);
-        player.playSound(Sound.sound(role.getSound(), Sound.Source.MASTER, 1f, 1f));
+    }
+
+    public void handleVote(Player voter, Player target) {
+        voteHandler.accept(voter, target);
     }
 
     public void updateVotes(Player player, Map<java.util.UUID, java.util.UUID> votes) {
         Map<java.util.UUID, List<java.util.UUID>> targetToVoters = new java.util.HashMap<>();
         for (Map.Entry<java.util.UUID, java.util.UUID> entry : votes.entrySet()) {
-            targetToVoters.computeIfAbsent(entry.getValue(), unused -> new ArrayList<>()).add(entry.getKey());
+            targetToVoters.putIfAbsent(entry.getValue(), new ArrayList<>());
+            targetToVoters.get(entry.getValue()).add(entry.getKey());
         }
 
         this.elements.stream()
@@ -46,7 +52,8 @@ public class WolfMenu extends InteractableMenu {
                     for (java.util.UUID voter : voters) {
                         try {
                             builder.append(Component.object(ObjectContents.playerHead(voter)).append(Component.space()));
-                        } catch (Exception e) {
+                        } catch (Exception ignored) {
+                            builder.append(Component.space());
                         }
                     }
 
@@ -60,18 +67,18 @@ public class WolfMenu extends InteractableMenu {
 
         elements.add(MenuElement.builder("title")
                 .position(0.5f, -1.6f)
-                .text(Component.translatable("minewolves.menu.werewolf.title").color(role.getTeam().getColor()).decorate(TextDecoration.BOLD))
+                .text(Component.translatable("minewolves.menu.elimination_vote.title", Component.text("Elimination Vote")).color(NamedTextColor.RED).decorate(TextDecoration.BOLD))
                 .scale(1.5f)
                 .build());
 
         elements.add(MenuElement.builder("countdown")
-                .position(0.5f, -1.3f)
-                .text(Component.translatable("minewolves.menu.countdown", Component.text(30)).color(role.getTeam().getColor()))
+                .position(0.5f, -1.0f)
+                .text(Component.translatable("minewolves.menu.countdown", Component.text(70)).color(NamedTextColor.WHITE))
                 .scale(1f)
                 .build());
 
-        List<Player> otherPlayers = player.getInstance().getPlayers().stream()
-                .filter(p -> p != player && (mineWolvesManager.roleManager.getRole(p) != null) && mineWolvesManager.roleManager.getRole(p).getTeam() != role.getTeam())
+        List<Player> candidates = player.getInstance().getPlayers().stream()
+                .filter(p -> mineWolvesManager.roleManager.getRole(p) != null)
                 .toList();
 
         float spacingX = 0.5f;
@@ -79,46 +86,35 @@ public class WolfMenu extends InteractableMenu {
         int maxPerRow = 5;
         float menuCenterX = 0.5f;
 
-        for (int i = 0; i < otherPlayers.size(); i++) {
-            Player p = otherPlayers.get(i);
+        for (int i = 0; i < candidates.size(); i++) {
+            Player candidate = candidates.get(i);
 
             int row = i / maxPerRow;
             int col = i % maxPerRow;
 
-            int itemsInThisRow = Math.min(maxPerRow, otherPlayers.size() - row * maxPerRow);
-
+            int itemsInThisRow = Math.min(maxPerRow, candidates.size() - row * maxPerRow);
             float rowWidth = (itemsInThisRow - 1) * spacingX;
-
             float startX = menuCenterX + (rowWidth / 2.0f);
 
             float posX = startX - col * spacingX;
             float posYHead = -0.5f + (row * spacingY);
             float posYName = -0.4f + (row * spacingY);
 
-            elements.add(MenuElement.builder(p.getUuid().toString())
+            elements.add(MenuElement.builder(candidate.getUuid().toString())
                     .position(posX, posYHead)
-                    .text(Component.object(ObjectContents.playerHead(p.getUuid())))
+                    .text(Component.object(ObjectContents.playerHead(candidate.getUuid())))
                     .scale(3f)
                     .isInteractable(true)
-                    .onClick(() -> {
-                        GamePhase phase = mineWolvesManager.getPhase();
-                        if (phase instanceof fr.notri1.minewolves.game.phases.NightPhase rolePhase) {
-                            rolePhase.currentTurns.stream()
-                                    .filter(WerewolfTurn.class::isInstance)
-                                    .map(WerewolfTurn.class::cast)
-                                    .findFirst()
-                                    .ifPresent(werewolfTurn -> werewolfTurn.handleVote(player, p));
-                        }
-                    })
+                    .onClick(() -> handleVote(player, candidate))
                     .build());
 
-            elements.add(MenuElement.builder(p.getUuid() + "_name")
+            elements.add(MenuElement.builder(candidate.getUuid() + "_name")
                     .position(posX, posYName)
-                    .text(Component.text(p.getUsername()).color(NamedTextColor.WHITE))
+                    .text(Component.text(candidate.getUsername()).color(NamedTextColor.WHITE))
                     .scale(1f)
                     .build());
 
-            elements.add(MenuElement.builder(p.getUuid() + "_votes")
+            elements.add(MenuElement.builder(candidate.getUuid() + "_votes")
                     .position(posX, posYName + 0.2f)
                     .text(Component.empty())
                     .scale(1.2f)

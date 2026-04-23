@@ -10,7 +10,7 @@ public class StartCommand extends Command {
 
         setDefaultExecutor((sender, context) -> {
             sender.sendMessage("Starting the game...");
-            MineWolves.mineWolvesManager.start();
+            MineWolves.mineWolvesManager.startGame();
         });
     }
 }

@@ -64,6 +64,7 @@ public abstract class Role {
     public List<Player> getPlayers() {
         return mineWolvesManager.roleManager.getPlayersWithRole(this);
     }
+
 }
 
 
