@@ -11,6 +11,15 @@
     },
     {
       "type": "bitmap",
+      "file": "minewolves:roles/villager.png",
+      "ascent": -10,
+      "height": 64,
+      "chars": [
+        "V"
+      ]
+    },
+    {
+      "type": "bitmap",
       "file": "minewolves:roles/littlegirl.png",
       "ascent": -10,
       "height": 64,
