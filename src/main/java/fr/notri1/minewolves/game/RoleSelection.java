@@ -29,6 +29,7 @@ public class RoleSelection {
             new Witch(),
             new Seer(),
             new Hunter(),
+            new LittleGirl(),
             new Villager()
     );
 

@@ -24,10 +24,15 @@
   "minewolves.role.witch.wake_up": "You wake up... Will you use a potion tonight?",
   "minewolves.role.witch.heal_used": "You used your heal potion!",
   "minewolves.role.witch.kill_used": "You used your kill potion on %s!",
+
   "minewolves.role.hunter": "Hunter",
   "minewolves.role.hunter.description": "When you die, you can shoot one player.",
   "minewolves.role.hunter.shoot_prompt": "You have been eliminated! Choose a player to take down with you.",
   "minewolves.role.hunter.shot": "You shot %s!",
+
+  "minewolves.role.littlegirl": "Little Girl",
+  "minewolves.role.littlegirl.description": "You can peek during the night, but be careful not to get caught!",
+
   "minewolves.menu.roles.title": "You are",
   "minewolves.menu.roles.footer": "Everyone, close your eyes.",
   "minewolves.menu.interactable": "Use your scroll wheel to navigate and %s to submit.",

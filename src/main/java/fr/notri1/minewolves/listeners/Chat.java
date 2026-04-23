@@ -5,11 +5,13 @@ import fr.notri1.minewolves.game.phases.DayPhase;
 import fr.notri1.minewolves.game.phases.GamePhase;
 import fr.notri1.minewolves.game.phases.NightPhase;
 import fr.notri1.minewolves.game.phases.turns.WerewolfTurn;
+import fr.notri1.minewolves.game.roles.LittleGirl;
 import fr.notri1.minewolves.game.roles.Role;
 import fr.notri1.minewolves.game.roles.Team;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.EventListener;
@@ -50,11 +52,13 @@ public class Chat implements EventListener<PlayerChatEvent> {
                     Audience wolfAudience = Audience.audience(mineWolvesManager.roleManager.getPlayersWithRole(playerRole).toArray(new Player[0]));
                     wolfAudience.sendMessage(Component.translatable("minewolves.role.werewolf").color(Team.WEREWOLVES.getColor()).append(Component.text(" | ").color(NamedTextColor.GRAY)).append(Component.text(player.getUsername()).color(NamedTextColor.WHITE)).append(Component.text(": ").color(NamedTextColor.GRAY)).append(Component.text(event.getRawMessage()).color(NamedTextColor.WHITE)));
 
-                    //todo: spec
+                    // spec
                     Audience specAudience = Audience.audience(player.getInstance().getPlayers().stream().filter(p -> p.getGameMode().equals(GameMode.SPECTATOR)).toArray(Player[]::new));
                     specAudience.sendMessage(Component.translatable("minewolves.role.werewolf").color(Team.WEREWOLVES.getColor()).append(Component.text(" | ").color(NamedTextColor.GRAY)).append(Component.text(player.getUsername()).color(NamedTextColor.WHITE)).append(Component.text(": ").color(NamedTextColor.GRAY)).append(Component.text(event.getRawMessage()).color(NamedTextColor.WHITE)));
 
-                    //todo: potite fille (forgot how it's called in english)
+                    //little girl
+                    Audience littleGirlAudience = Audience.audience(player.getInstance().getPlayers().stream().filter(p -> mineWolvesManager.roleManager.getRole(p) != null && (mineWolvesManager.roleManager.getRole(p) instanceof LittleGirl)).toArray(Player[]::new));
+                    littleGirlAudience.sendMessage(Component.translatable("minewolves.role.werewolf").color(Team.WEREWOLVES.getColor()).append(Component.text(" | ").color(NamedTextColor.GRAY)).append(Component.text("player").decorate(TextDecoration.OBFUSCATED).color(NamedTextColor.WHITE)).append(Component.text(": ").color(NamedTextColor.GRAY)).append(Component.text(event.getRawMessage()).color(NamedTextColor.WHITE)));
 
                     return Result.SUCCESS;
                 }
