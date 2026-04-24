@@ -38,6 +38,24 @@
     },
     {
       "type": "bitmap",
+      "file": "minewolves:roles/hunter.png",
+      "ascent": -10,
+      "height": 64,
+      "chars": [
+        "h"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minewolves:roles/seer.png",
+      "ascent": -10,
+      "height": 64,
+      "chars": [
+        "s"
+      ]
+    },
+    {
+      "type": "bitmap",
       "file": "minewolves:roles/font/splitter.png",
       "ascent": -32768,
       "height": -3,
