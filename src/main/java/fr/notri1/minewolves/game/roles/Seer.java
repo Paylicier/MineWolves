@@ -10,6 +10,12 @@ import net.kyori.adventure.key.Key;
  */
 public class Seer extends Role {
 
+    private final java.util.List<net.minestom.server.entity.Player> revealedPlayers = new java.util.ArrayList<>();
+
+    public java.util.List<net.minestom.server.entity.Player> getRevealedPlayers() {
+        return this.revealedPlayers;
+    }
+
     @Override
     public String getKey() {
         return "seer";
@@ -42,7 +48,7 @@ public class Seer extends Role {
 
     @Override
     public int getNightOrder() {
-        return 1; // keeping a margin for potential future roles that might need to act before the Seer (idk)
+        return 1;
     }
 
     @Override
@@ -50,4 +56,3 @@ public class Seer extends Role {
         return new SeerTurn(this);
     }
 }
-

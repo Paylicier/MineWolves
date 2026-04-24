@@ -238,7 +238,7 @@ public class DayPhase extends GamePhase {
     private void checkWinOrEndPhase() {
         Team winner = winCheck();
         if (winner != null) {
-            instanceContainer.sendMessage(Component.translatable("minewolves.game.win", Component.text(winner.getName())));
+            instanceContainer.sendMessage(Component.translatable("minewolves.game.win", Component.text(winner.getName()).color(winner.getColor())));
             mineWolvesManager.endGame();
         } else {
             onEnd();

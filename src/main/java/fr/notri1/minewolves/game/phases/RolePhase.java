@@ -8,7 +8,9 @@ import fr.notri1.minewolves.game.roles.Werewolf;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.ShadowColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.timer.Scheduler;
 import net.minestom.server.timer.TaskSchedule;
@@ -48,6 +50,12 @@ public class RolePhase extends GamePhase {
         instanceContainer.getPlayers().forEach(player -> {
             Role playerRole = mineWolvesManager.roleManager.getRole(player);
             RoleMenu roleMenu = new RoleMenu(playerRole);
+            Component separator = Component.text("  ".repeat(30)).decorate(TextDecoration.STRIKETHROUGH).color(NamedTextColor.GRAY);
+
+            player.sendMessage(separator);
+            player.sendMessage(Component.translatable("minewolves.menu.roles.title").append(Component.text(" ")).append(playerRole.getDisplayName()));
+            player.sendMessage(playerRole.getDescription());
+            player.sendMessage(separator);
 
             roleMenu.open(player);
             scheduler.buildTask(() -> {
