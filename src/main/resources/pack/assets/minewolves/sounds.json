@@ -6,11 +6,32 @@
     ],
     "subtitle": "Agrouuuu"
   },
+  "role.littlegirl": {
+    "replace": true,
+    "sounds": [
+      "minewolves:giggle"
+    ],
+    "subtitle": "Giggle"
+  },
+  "ambient.rooster": {
+    "replace": true,
+    "sounds": [
+      "minewolves:rooster"
+    ],
+    "subtitle": "Cocorico"
+  },
   "narrator.night_falls.en": {
     "replace": true,
     "sounds": [
       "minewolves:narrator/en/night_falls"
     ],
     "subtitle": "Narrator : Everyone, close your eyes..."
+  },
+  "narrator.night_falls.fr": {
+    "replace": true,
+    "sounds": [
+      "minewolves:narrator/fr/night_falls"
+    ],
+    "subtitle": "Narrateur : Rompiche"
   }
 }

@@ -32,7 +32,7 @@ public class Seer extends Role {
 
     @Override
     public Key getSound() {
-        return Key.key("minewolves", "role.seer");
+        return Key.key("minecraft", "block.enchantment_table.use");
     }
 
     @Override

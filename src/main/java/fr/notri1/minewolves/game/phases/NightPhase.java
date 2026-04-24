@@ -4,6 +4,7 @@ import fr.notri1.minewolves.game.phases.turns.NightTurn;
 import fr.notri1.minewolves.game.roles.Role;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
+import net.minestom.server.entity.GameMode;
 import net.minestom.server.potion.Potion;
 import net.minestom.server.potion.PotionEffect;
 import net.minestom.server.timer.TaskSchedule;
@@ -102,16 +103,15 @@ public class NightPhase extends GamePhase {
     }
 
     private void applyBlindness() {
-        instanceContainer.getPlayers().forEach(player ->
+        instanceContainer.getPlayers().stream().filter(p -> p.getGameMode()!= GameMode.SPECTATOR).forEach(player ->
                 player.addEffect(new Potion(PotionEffect.BLINDNESS, 0, -1, 0x00))
         );
     }
 
     @Override
     public void onEnd() {
-
         MinecraftServer.getSchedulerManager().buildTask(() -> {
             mineWolvesManager.setPhase(new DayPhase());
-        }).delay(Duration.ofSeconds(3)).schedule();
+        }).delay(Duration.ofSeconds(2)).schedule();
     }
 }

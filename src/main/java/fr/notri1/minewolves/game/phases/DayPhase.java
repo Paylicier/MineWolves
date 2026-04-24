@@ -5,24 +5,24 @@ import fr.notri1.minewolves.game.menus.MayorElectionMenu;
 import fr.notri1.minewolves.game.menus.Menu;
 import fr.notri1.minewolves.game.roles.Role;
 import fr.notri1.minewolves.game.roles.Team;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.MinecraftServer;
-import net.minestom.server.entity.GameMode;
 import net.minestom.server.potion.PotionEffect;
 import net.minestom.server.timer.TaskSchedule;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static fr.notri1.minewolves.MineWolves.instanceContainer;
 import static fr.notri1.minewolves.MineWolves.mineWolvesManager;
-import static fr.notri1.minewolves.pack.LocalizationUtils.getLocalizedSound;
 
 public class DayPhase extends GamePhase {
 
@@ -43,35 +43,37 @@ public class DayPhase extends GamePhase {
 
 
         // narrator
-        instanceContainer.getPlayers().forEach(player -> player.playSound(getLocalizedSound("minewolves", "narrator.night_falls", player)));
+        instanceContainer.getPlayers().forEach(player -> player.playSound(Sound.sound(Key.key("minewolves", "ambient.rooster"), Sound.Source.MASTER, 1f, 1f)));
 
+        List<CompletableFuture<Void>> eliminationFutures = new java.util.ArrayList<>();
 
         mineWolvesManager.getPlayersToEliminate().forEach(player -> {
             instanceContainer.sendMessage(Component.translatable("minewolves.day.killed", Component.text(player.getUsername()), mineWolvesManager.roleManager.getRole(player).getDisplayName()));
-            mineWolvesManager.eliminatePlayer(player);
+            eliminationFutures.add(mineWolvesManager.eliminatePlayer(player));
         });
 
         if (mineWolvesManager.getPlayersToEliminate().isEmpty()) {
             instanceContainer.sendMessage(Component.translatable("minewolves.day.no_kill"));
         }
 
-        mineWolvesManager.clearPlayersToEliminate();
+        CompletableFuture.allOf(eliminationFutures.toArray(new CompletableFuture[0])).thenRun(() -> {
+            MinecraftServer.getSchedulerManager().scheduleNextTick(() -> {
+                mineWolvesManager.clearPlayersToEliminate();
 
-        Team winner = winCheck();
-        if (winner != null) {
-            // todo: translation for team name
-            instanceContainer.sendMessage(Component.translatable("minewolves.game.win", Component.text(winner.getName())));
+                Team winner = winCheck();
+                if (winner != null) {
+                    instanceContainer.sendMessage(Component.translatable("minewolves.game.win", Component.text(winner.getName())));
+                    mineWolvesManager.endGame();
+                    return;
+                }
 
-            mineWolvesManager.endGame();
-
-            return;
-        }
-
-        if (mineWolvesManager.getMayor() == null) {
-            mayorElection();
-        } else {
-            eliminationVote();
-        }
+                if (mineWolvesManager.getMayor() == null) {
+                    mayorElection();
+                } else {
+                    eliminationVote();
+                }
+            });
+        });
     }
 
     private void mayorElection() {
@@ -205,7 +207,12 @@ public class DayPhase extends GamePhase {
                     net.minestom.server.entity.Player eliminated = instanceContainer.getPlayerByUuid(topVoted.getFirst());
                     if (eliminated != null) {
                         instanceContainer.sendMessage(Component.translatable("minewolves.day.killed.village", Component.text(eliminated.getUsername()), mineWolvesManager.roleManager.getRole(eliminated).getDisplayName()));
-                        mineWolvesManager.eliminatePlayer(eliminated);
+                        mineWolvesManager.eliminatePlayer(eliminated).thenRun(() -> {
+                            MinecraftServer.getSchedulerManager().scheduleNextTick(() -> {
+                                checkWinOrEndPhase();
+                            });
+                        });
+                        return TaskSchedule.stop();
                     }
                 } else if (!topVoted.isEmpty()) {
                     instanceContainer.sendMessage(Component.translatable("minewolves.day.kill.tie"));
@@ -213,15 +220,7 @@ public class DayPhase extends GamePhase {
                     instanceContainer.sendMessage(Component.translatable("minewolves.day.kill.no_vote"));
                 }
 
-                // Check again for win condition after a kill
-                Team winner = winCheck();
-                if (winner != null) {
-                    instanceContainer.sendMessage(Component.translatable("minewolves.game.win", Component.text(winner.getName())));
-                    mineWolvesManager.endGame();
-                } else {
-                    onEnd();
-                }
-
+                checkWinOrEndPhase();
                 return TaskSchedule.stop();
             }
 
@@ -234,6 +233,16 @@ public class DayPhase extends GamePhase {
 
             return TaskSchedule.seconds(1);
         });
+    }
+
+    private void checkWinOrEndPhase() {
+        Team winner = winCheck();
+        if (winner != null) {
+            instanceContainer.sendMessage(Component.translatable("minewolves.game.win", Component.text(winner.getName())));
+            mineWolvesManager.endGame();
+        } else {
+            onEnd();
+        }
     }
 
     private Team winCheck() { //todo: cupid, the couple win (so it's no a team)

@@ -30,7 +30,7 @@ public class Villager extends Role {
 
     @Override
     public Key getSound() {
-        return Key.key("minewolves", "role.villager");
+        return Key.key("minecraft", "entity.villager.celebrate");
     }
 
     @Override

@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import net.minestom.server.entity.Player;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static fr.notri1.minewolves.MineWolves.mineWolvesManager;
 
@@ -57,10 +58,9 @@ public abstract class Role {
     /**
      * Called when this player dies.
      */
-    public void onDeath() {
-        // Default: no action
+    public CompletableFuture<Void> onDeath() {
+        return CompletableFuture.completedFuture(null);
     }
-
     public List<Player> getPlayers() {
         return mineWolvesManager.roleManager.getPlayersWithRole(this);
     }

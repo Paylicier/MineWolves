@@ -3,6 +3,7 @@ package fr.notri1.minewolves.game;
 import fr.notri1.minewolves.Status;
 import fr.notri1.minewolves.game.phases.GamePhase;
 import fr.notri1.minewolves.game.phases.RolePhase;
+import fr.notri1.minewolves.game.roles.Role;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import static fr.notri1.minewolves.MineWolves.*;
 
@@ -115,22 +117,28 @@ public class MineWolvesManager {
         }
     }
 
-    public void eliminatePlayer(Player player) {
-        if (status != Status.IN_GAME) return;
-        if (roleManager.getRole(player) == null) return;
-        mineWolvesManager.roleManager.removeRole(player);
-        if (mineWolvesManager.getMayor() != null && mineWolvesManager.getMayor().equals(player)) {
-            mineWolvesManager.setMayor(null);
-        }
-        System.out.println(player.getUsername() + " has been eliminated.");
-        if (!player.isOnline()) return;
-        mineWolvesManager.unSitPlayer(player);
-        player.setGameMode(GameMode.SPECTATOR);
-        // viewable rules seem broken, so let's do it the hard way
-        player.sendPacketToViewers(new DestroyEntitiesPacket(player.getEntityId())); // no player for u
-//        player.updateViewableRule(_ -> false);
-//        player.setAutoViewable(false);
-        player.teleport(player.getPosition().withY(player.getPosition().y() + 1));
+    public CompletableFuture<Void> eliminatePlayer(Player player) {
+        if (status != Status.IN_GAME) return CompletableFuture.completedFuture(null);
+        Role role = roleManager.getRole(player);
+        if (role == null) return CompletableFuture.completedFuture(null);
+
+        CompletableFuture<Void> deathSequence = player.isOnline() ? role.onDeath() : CompletableFuture.completedFuture(null);
+
+        return deathSequence.thenRun(() -> {
+            MinecraftServer.getSchedulerManager().scheduleNextTick(() -> {
+                mineWolvesManager.roleManager.removeRole(player);
+                if (mineWolvesManager.getMayor() != null && mineWolvesManager.getMayor().equals(player)) {
+                    mineWolvesManager.setMayor(null);
+                }
+                System.out.println(player.getUsername() + " has been eliminated.");
+
+                if (!player.isOnline()) return;
+                mineWolvesManager.unSitPlayer(player);
+                player.setGameMode(GameMode.SPECTATOR);
+                player.sendPacketToViewers(new DestroyEntitiesPacket(player.getEntityId()));
+                player.teleport(player.getPosition().withY(player.getPosition().y() + 1));
+            });
+        });
     }
 
     private void updateCountdown(int players, int min, int max) {
