@@ -55,7 +55,7 @@ Nestled in a secluded valley, the seemingly tranquil village of Millers Hollow h
 - Built using [Minestom](https://minestom.net/)
 
 ## License
-This project is available under **[TBD]**
+This project is available under **GNU Affero General Public License v3**
 
 Please read the license carefully before using this software. If you have any questions about licensing, please open an issue.
 
