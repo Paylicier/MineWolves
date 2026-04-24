@@ -6,7 +6,9 @@ import net.minestom.server.coordinate.Vec;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EntityType;
 import net.minestom.server.entity.Player;
+import net.minestom.server.entity.metadata.EntityMeta;
 import net.minestom.server.entity.metadata.display.AbstractDisplayMeta;
+import net.minestom.server.entity.metadata.display.ItemDisplayMeta;
 import net.minestom.server.entity.metadata.display.TextDisplayMeta;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.item.ItemStack;
@@ -91,7 +93,7 @@ public abstract class Menu {
         session.cameraEntity.remove();
 
         // Teleport the player back to their original position
-        player.teleport(session.originalPos);
+//        player.teleport(session.originalPos);
     }
 
     /**
@@ -164,7 +166,14 @@ public abstract class Menu {
             Pos elementPos = cameraPos.add(offset.x(), offset.y() + getArmorStandEyeHeight(), offset.z());
 
             // Spawn a real Text Display entity, visible only to this player
-            Entity textDisplay = createTextDisplay(element, cameraPos.yaw() - 90, cameraPos.pitch());
+            Entity textDisplay = null;
+
+            if (element.getItem() != null) {
+                textDisplay = createItemDisplay(element, cameraPos.yaw() - 90, cameraPos.pitch());
+            } else {
+                textDisplay = createTextDisplay(element, cameraPos.yaw() - 90, cameraPos.pitch());
+            }
+
             textDisplay.setAutoViewable(false);
             textDisplay.setInstance(instanceContainer, elementPos);
             textDisplay.addViewer(player);
@@ -213,7 +222,16 @@ public abstract class Menu {
             MenuElement element = session.elements.get(i);
             if (element.getId().equals(elementId)) {
                 Entity entity = session.displayEntities.get(i);
-                TextDisplayMeta meta = (TextDisplayMeta) entity.getEntityMeta();
+                AbstractDisplayMeta  meta;
+
+                if (entity.getEntityType() == EntityType.TEXT_DISPLAY) {
+                    meta = (TextDisplayMeta) entity.getEntityMeta();
+                } else if (entity.getEntityType() == EntityType.ITEM_DISPLAY) {
+                    meta = (ItemDisplayMeta) entity.getEntityMeta();
+                } else {
+                    return; // Unsupported entity type
+                }
+
                 meta.setTransformationInterpolationDuration(interpolationDuration);
                 meta.setTransformationInterpolationStartDelta(0);
                 float s = element.getScale() * scaleMultiplier;
@@ -239,11 +257,37 @@ public abstract class Menu {
         meta.setBillboardRenderConstraints(AbstractDisplayMeta.BillboardConstraints.FIXED);
         meta.setScale(new Vec(element.getScale(), element.getScale(), element.getScale()));
 
-        // A Text Display renders its text on the +Z face by default.
-        // To make it face toward the camera, rotate it 180° from the camera's look direction.
-        // Qyaw = rotation around Y by (cameraYaw + 180)°
-        // Qpitch = rotation around X by (cameraPitch)°
-        // Combined = Qyaw * Qpitch
+        double halfYaw = Math.toRadians(cameraYaw + 180.0) / 2.0;
+        double halfPitch = Math.toRadians(cameraPitch) / 2.0;
+
+        double yW = Math.cos(halfYaw);
+        double yY = Math.sin(halfYaw);
+
+        double pW = Math.cos(halfPitch);
+        double pX = Math.sin(halfPitch);
+
+        float qx = (float) (yW * pX);
+        float qy = (float) (yY * pW);
+        float qz = (float) (-yY * pX);
+        float qw = (float) (yW * pW);
+
+        meta.setLeftRotation(new float[]{qx, qy, qz, qw});
+
+        return entity;
+    }
+
+    /**
+     * Creates an item display entity.
+     */
+    private Entity createItemDisplay(MenuElement element, float cameraYaw, float cameraPitch) {
+        Entity entity = new Entity(EntityType.ITEM_DISPLAY);
+        entity.setNoGravity(true);
+
+        ItemDisplayMeta meta = (ItemDisplayMeta) entity.getEntityMeta();
+        meta.setItemStack(element.getItem());
+        meta.setBillboardRenderConstraints(AbstractDisplayMeta.BillboardConstraints.FIXED);
+        meta.setScale(new Vec(element.getScale(), element.getScale(), element.getScale()));
+
         double halfYaw = Math.toRadians(cameraYaw + 180.0) / 2.0;
         double halfPitch = Math.toRadians(cameraPitch) / 2.0;
 
@@ -410,6 +454,7 @@ public abstract class Menu {
         }
     }
 }
+
 
 
 

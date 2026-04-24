@@ -2,11 +2,13 @@ package fr.notri1.minewolves.game.phases.turns;
 
 import fr.notri1.minewolves.game.menus.WolfMenu;
 import fr.notri1.minewolves.game.phases.NightPhase;
+import fr.notri1.minewolves.game.roles.LittleGirl;
 import fr.notri1.minewolves.game.roles.Team;
 import fr.notri1.minewolves.game.roles.Werewolf;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.timer.TaskSchedule;
@@ -40,12 +42,19 @@ public class WerewolfTurn extends NightTurn {
             wolfMenu.open(player);
         });
 
+        // Notify the little girl that the werewolves are voting
+        instanceContainer.getPlayers().stream().filter(p -> mineWolvesManager.roleManager.getRole(p) != null && (mineWolvesManager.roleManager.getRole(p) instanceof LittleGirl)).forEach(player -> {
+            Audience.audience(player).sendMessage(Component.translatable("minewolves.role.werewolf").color(Team.WEREWOLVES.getColor())
+                    .append(Component.text(" | ").color(NamedTextColor.GRAY))
+                    .append(Component.translatable("minewolves.littlegirl.wolf_turn").color(NamedTextColor.WHITE)));
+        });
+
         AtomicInteger countdown = new AtomicInteger(30);
 
         MinecraftServer.getSchedulerManager().submitTask(() -> {
             int current = countdown.getAndDecrement();
 
-            if (current < 0) {
+            if (current <= 0) {
                 role.getPlayers().forEach(fr.notri1.minewolves.game.menus.Menu::closeStatic);
 
                 Player eliminatedPlayer = null;
@@ -108,5 +117,10 @@ public class WerewolfTurn extends NightTurn {
         audience.sendMessage(Component.translatable("minewolves.role.werewolf").color(Team.WEREWOLVES.getColor())
                 .append(Component.text(" | ").color(NamedTextColor.GRAY))
                 .append(Component.translatable("minewolves.werewolf.vote", Component.text(voter.getUsername()), Component.text(target.getUsername())).color(NamedTextColor.WHITE)));
+
+        Audience littleGirlAudience = Audience.audience(voter.getInstance().getPlayers().stream().filter(p -> mineWolvesManager.roleManager.getRole(p) != null && (mineWolvesManager.roleManager.getRole(p) instanceof LittleGirl)).toArray(Player[]::new));
+        littleGirlAudience.sendMessage(Component.translatable("minewolves.role.werewolf").color(Team.WEREWOLVES.getColor())
+                .append(Component.text(" | ").color(NamedTextColor.GRAY))
+                .append(Component.translatable("minewolves.werewolf.vote", Component.text("player").decorate(TextDecoration.OBFUSCATED).color(role.getColorForPlayer(voter)), Component.text(target.getUsername())).color(NamedTextColor.WHITE)));
     }
 }

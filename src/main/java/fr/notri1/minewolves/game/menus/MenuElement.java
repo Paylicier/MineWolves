@@ -1,8 +1,7 @@
 package fr.notri1.minewolves.game.menus;
 
 import net.kyori.adventure.text.Component;
-import net.minestom.server.entity.EntityType;
-import net.minestom.server.entity.PlayerSkin;
+import net.minestom.server.item.ItemStack;
 
 public class MenuElement {
 
@@ -13,9 +12,8 @@ public class MenuElement {
     private final float scale;
     private final int backgroundColor; // ARGB
     private final Runnable onClick;
+    private final ItemStack item;
 
-    private final EntityType entityType;
-    private final PlayerSkin skin;
     private final boolean isInteractable;
 
     private int entityId = -1;
@@ -28,9 +26,8 @@ public class MenuElement {
         this.scale = builder.scale;
         this.backgroundColor = builder.backgroundColor;
         this.onClick = builder.onClick;
-        this.entityType = builder.entityType;
-        this.skin = builder.skin;
         this.isInteractable = builder.isInteractable;
+        this.item = builder.item;
     }
 
     public static Builder builder(String id) {
@@ -53,6 +50,10 @@ public class MenuElement {
         return text;
     }
 
+    public ItemStack getItem() {
+        return item;
+    }
+
     public float getScale() {
         return scale;
     }
@@ -63,14 +64,6 @@ public class MenuElement {
 
     public Runnable getOnClick() {
         return onClick;
-    }
-
-    public EntityType getEntityType() {
-        return entityType;
-    }
-
-    public PlayerSkin getSkin() {
-        return skin;
     }
 
     public boolean isInteractable() {
@@ -94,12 +87,11 @@ public class MenuElement {
         private float x = 0f;
         private float y = 0f;
         private Component text = null;
+        private ItemStack item = null;
         private float scale = 1f;
         private int backgroundColor = 0x00000000;
         private Runnable onClick = null;
 
-        private EntityType entityType = EntityType.TEXT_DISPLAY;
-        private PlayerSkin skin = null;
         private boolean isInteractable = false;
 
         public Builder(String id) {
@@ -117,6 +109,11 @@ public class MenuElement {
             return this;
         }
 
+        public Builder item(ItemStack item) {
+            this.item = item;
+            return this;
+        }
+
         public Builder scale(float scale) {
             this.scale = scale;
             return this;
@@ -129,16 +126,6 @@ public class MenuElement {
 
         public Builder onClick(Runnable onClick) {
             this.onClick = onClick;
-            return this;
-        }
-
-        public Builder entityType(EntityType entityType) {
-            this.entityType = entityType;
-            return this;
-        }
-
-        public Builder skin(PlayerSkin skin) {
-            this.skin = skin;
             return this;
         }
 

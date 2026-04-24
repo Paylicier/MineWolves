@@ -19,16 +19,17 @@ public class PlayerFirstSpawn implements EventListener<PlayerSpawnEvent> {
 
     @Override
     public Result run(PlayerSpawnEvent event) {
-        System.out.println("Player " + event.getPlayer().getUsername() + " spawned: " + event.isFirstSpawn());
-        if (!event.isFirstSpawn()) return null;
+        if (!event.isFirstSpawn()) return Result.SUCCESS;
 
         final Player player = event.getPlayer();
 
         // [+] PLAYER [1/20]
         instanceContainer.sendMessage(Component.text("[+] ").color(NamedTextColor.GREEN).append(Component.text(player.getUsername()).color(NamedTextColor.WHITE)).append(Component.text(" [" + instanceContainer.getPlayers().size() + "/" + config.getGame().getMaxPlayers() + "]").color(NamedTextColor.GRAY)));
 
+        System.out.println(player.getUsername() + " has joined the game. [" + instanceContainer.getPlayers().size() + "/" + config.getGame().getMaxPlayers() + "]");
+
         MineWolves.mineWolvesManager.checkStart();
 
-        return null;
+        return Result.SUCCESS;
     }
 }

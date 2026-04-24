@@ -11,6 +11,9 @@ import net.kyori.adventure.key.Key;
  */
 public class Witch extends Role {
 
+    private boolean hasHealingPotion = true;
+    private boolean hasKillingPotion = true;
+
     @Override
     public String getKey() {
         return "witch";
@@ -43,6 +46,22 @@ public class Witch extends Role {
 
     public int getNightOrder() {
         return 2;
+    }
+
+    public boolean hasHealingPotion() {
+        return hasHealingPotion;
+    }
+
+    public boolean hasKillingPotion() {
+        return hasKillingPotion;
+    }
+
+    public void useHealingPotion() {
+        hasHealingPotion = false;
+    }
+
+    public void useKillingPotion() {
+        hasKillingPotion = false;
     }
 
     public NightTurn createNightTurn() {

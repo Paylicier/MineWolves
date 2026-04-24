@@ -8,6 +8,7 @@ import fr.notri1.minewolves.game.phases.turns.WerewolfTurn;
 import fr.notri1.minewolves.game.roles.LittleGirl;
 import fr.notri1.minewolves.game.roles.Role;
 import fr.notri1.minewolves.game.roles.Team;
+import fr.notri1.minewolves.game.roles.Werewolf;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -37,11 +38,11 @@ public class Chat implements EventListener<PlayerChatEvent> {
             specAudience.sendMessage(Component.translatable("minewolves.spectator").color(NamedTextColor.GRAY).append(Component.text(" | ").color(NamedTextColor.GRAY)).append(Component.text(player.getUsername()).color(NamedTextColor.WHITE)).append(Component.text(": ").color(NamedTextColor.GRAY)).append(Component.text(event.getRawMessage()).color(NamedTextColor.WHITE)));
             return Result.SUCCESS;
         }
-        if ((mineWolvesManager.status == Status.IN_GAME) && !(phase instanceof DayPhase)) {
+        if ((mineWolvesManager.status == Status.IN_GAME) && !(phase instanceof DayPhase) && (((NightPhase) phase).currentTurns != null)) {
             event.setCancelled(true);
             // if player is a wolf, allow them to chat with other wolves
             Role playerRole = mineWolvesManager.roleManager.getRole(player);
-            if (playerRole != null && (playerRole.getTeam() == Team.WEREWOLVES) && phase instanceof NightPhase) {
+            if (playerRole != null && (playerRole.getTeam() == Team.WEREWOLVES)) {
                 if (((NightPhase) phase).currentTurns.stream().anyMatch(t -> t instanceof WerewolfTurn)) {
 
                     // maybe add an option in config to allow/disallow specs to see wolf chat
@@ -58,7 +59,7 @@ public class Chat implements EventListener<PlayerChatEvent> {
 
                     //little girl
                     Audience littleGirlAudience = Audience.audience(player.getInstance().getPlayers().stream().filter(p -> mineWolvesManager.roleManager.getRole(p) != null && (mineWolvesManager.roleManager.getRole(p) instanceof LittleGirl)).toArray(Player[]::new));
-                    littleGirlAudience.sendMessage(Component.translatable("minewolves.role.werewolf").color(Team.WEREWOLVES.getColor()).append(Component.text(" | ").color(NamedTextColor.GRAY)).append(Component.text("player").decorate(TextDecoration.OBFUSCATED).color(NamedTextColor.WHITE)).append(Component.text(": ").color(NamedTextColor.GRAY)).append(Component.text(event.getRawMessage()).color(NamedTextColor.WHITE)));
+                    littleGirlAudience.sendMessage(Component.translatable("minewolves.role.werewolf").color(Team.WEREWOLVES.getColor()).append(Component.text(" | ").color(NamedTextColor.GRAY)).append(Component.text("player").decorate(TextDecoration.OBFUSCATED).color(((Werewolf) playerRole).getColorForPlayer(player))).append(Component.text(": ").color(NamedTextColor.GRAY)).append(Component.text(event.getRawMessage()).color(NamedTextColor.WHITE)));
 
                     return Result.SUCCESS;
                 }

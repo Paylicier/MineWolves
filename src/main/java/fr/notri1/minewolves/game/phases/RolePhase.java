@@ -37,15 +37,17 @@ public class RolePhase extends GamePhase {
 
         mineWolvesManager.roleManager.updateTeamBossBar(Team.WEREWOLVES);
 
+        mineWolvesManager.roleManager.getAliveRoles().stream().filter(r -> r instanceof Werewolf).forEach(r -> ((Werewolf) r).setRandomColors());
+
         // Show roles
 
         Scheduler scheduler = MinecraftServer.getSchedulerManager();
 
+        instanceContainer.setTime(18000);
+
         instanceContainer.getPlayers().forEach(player -> {
             Role playerRole = mineWolvesManager.roleManager.getRole(player);
             RoleMenu roleMenu = new RoleMenu(playerRole);
-
-            instanceContainer.setTime(18000);
 
             roleMenu.open(player);
             scheduler.buildTask(() -> {
@@ -54,12 +56,12 @@ public class RolePhase extends GamePhase {
                 if (playerRole.getTeam() == Team.WEREWOLVES) {
                     player.showBossBar(mineWolvesManager.roleManager.getTeamBossBar(playerRole.getTeam()));
                 }
-                instanceContainer.setTime(1000);
                 roleMenu.close(player);
             }).delay(TaskSchedule.seconds(5)).schedule();
         });
 
         scheduler.buildTask(() -> {
+            instanceContainer.setTime(1000);
             onEnd();
         }).delay(TaskSchedule.seconds(5)).schedule();
     }

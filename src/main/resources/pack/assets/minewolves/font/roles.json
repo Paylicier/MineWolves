@@ -20,6 +20,15 @@
     },
     {
       "type": "bitmap",
+      "file": "minewolves:roles/witch.png",
+      "ascent": -10,
+      "height": 64,
+      "chars": [
+        "w"
+      ]
+    },
+    {
+      "type": "bitmap",
       "file": "minewolves:roles/littlegirl.png",
       "ascent": -10,
       "height": 64,

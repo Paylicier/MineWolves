@@ -8,6 +8,7 @@ import net.minestom.server.potion.Potion;
 import net.minestom.server.potion.PotionEffect;
 import net.minestom.server.timer.TaskSchedule;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -108,6 +109,9 @@ public class NightPhase extends GamePhase {
 
     @Override
     public void onEnd() {
-        mineWolvesManager.setPhase(new DayPhase());
+
+        MinecraftServer.getSchedulerManager().buildTask(() -> {
+            mineWolvesManager.setPhase(new DayPhase());
+        }).delay(Duration.ofSeconds(3)).schedule();
     }
 }

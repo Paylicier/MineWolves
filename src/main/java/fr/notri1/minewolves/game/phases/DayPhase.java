@@ -41,15 +41,6 @@ public class DayPhase extends GamePhase {
         // clear blindess
         instanceContainer.getPlayers().forEach(player -> player.removeEffect(PotionEffect.BLINDNESS));
 
-        Team winner = winCheck();
-        if (winner != null) {
-            // todo: translation for team name
-            instanceContainer.sendMessage(Component.translatable("minewolves.game.win", Component.text(winner.getName())));
-
-            mineWolvesManager.endGame();
-
-            return;
-        }
 
         // narrator
         instanceContainer.getPlayers().forEach(player -> player.playSound(getLocalizedSound("minewolves", "narrator.night_falls", player)));
@@ -60,7 +51,21 @@ public class DayPhase extends GamePhase {
             mineWolvesManager.eliminatePlayer(player);
         });
 
+        if (mineWolvesManager.getPlayersToEliminate().isEmpty()) {
+            instanceContainer.sendMessage(Component.translatable("minewolves.day.no_kill"));
+        }
+
         mineWolvesManager.clearPlayersToEliminate();
+
+        Team winner = winCheck();
+        if (winner != null) {
+            // todo: translation for team name
+            instanceContainer.sendMessage(Component.translatable("minewolves.game.win", Component.text(winner.getName())));
+
+            mineWolvesManager.endGame();
+
+            return;
+        }
 
         if (mineWolvesManager.getMayor() == null) {
             mayorElection();
@@ -199,7 +204,7 @@ public class DayPhase extends GamePhase {
                 if (topVoted.size() == 1) {
                     net.minestom.server.entity.Player eliminated = instanceContainer.getPlayerByUuid(topVoted.getFirst());
                     if (eliminated != null) {
-                        instanceContainer.sendMessage(Component.translatable("minewolves.day.killed.village", Component.text(eliminated.getUsername()), mineWolvesManager.roleManager.getRole(player).getDisplayName()));
+                        instanceContainer.sendMessage(Component.translatable("minewolves.day.killed.village", Component.text(eliminated.getUsername()), mineWolvesManager.roleManager.getRole(eliminated).getDisplayName()));
                         mineWolvesManager.eliminatePlayer(eliminated);
                     }
                 } else if (!topVoted.isEmpty()) {

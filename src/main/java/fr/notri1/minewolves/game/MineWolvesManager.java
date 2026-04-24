@@ -13,6 +13,12 @@ import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EntityType;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
+import net.minestom.server.instance.InstanceContainer;
+import net.minestom.server.network.packet.server.play.DestroyEntitiesPacket;
+import net.minestom.server.network.packet.server.play.EntityEffectPacket;
+import net.minestom.server.network.packet.server.play.EntityMetaDataPacket;
+import net.minestom.server.potion.Potion;
+import net.minestom.server.potion.PotionEffect;
 import net.minestom.server.timer.Task;
 import net.minestom.server.timer.TaskSchedule;
 
@@ -20,6 +26,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static fr.notri1.minewolves.MineWolves.*;
 
@@ -71,6 +78,7 @@ public class MineWolvesManager {
     public void setMayor(Player player) {
         mayor = player;
     }
+
     public Player getMayor() {
         return mayor;
     }
@@ -108,17 +116,21 @@ public class MineWolvesManager {
     }
 
     public void eliminatePlayer(Player player) {
-        if(status != Status.IN_GAME) return;
+        if (status != Status.IN_GAME) return;
         if (roleManager.getRole(player) == null) return;
         mineWolvesManager.roleManager.removeRole(player);
         if (mineWolvesManager.getMayor() != null && mineWolvesManager.getMayor().equals(player)) {
             mineWolvesManager.setMayor(null);
         }
-        if(!player.isOnline()) return;
-        player.setGameMode(GameMode.SPECTATOR);
-        player.setAutoViewable(false);
-        player.getViewers().forEach(p -> player.removeViewer(p));
+        System.out.println(player.getUsername() + " has been eliminated.");
+        if (!player.isOnline()) return;
         mineWolvesManager.unSitPlayer(player);
+        player.setGameMode(GameMode.SPECTATOR);
+        // viewable rules seem broken, so let's do it the hard way
+        player.sendPacketToViewers(new DestroyEntitiesPacket(player.getEntityId())); // no player for u
+//        player.updateViewableRule(_ -> false);
+//        player.setAutoViewable(false);
+        player.teleport(player.getPosition().withY(player.getPosition().y() + 1));
     }
 
     private void updateCountdown(int players, int min, int max) {
@@ -166,8 +178,12 @@ public class MineWolvesManager {
     }
 
     public void endGame() {
-        if(status != Status.IN_GAME) return;
+        if (status != Status.IN_GAME) return;
         mineWolvesManager.status = Status.ENDING;
+
+        System.out.println("Game ended");
+
+        instanceContainer.getPlayers().forEach(this::unSitPlayer);
 
         MinecraftServer.getSchedulerManager().buildTask(() -> {
             instanceContainer.sendMessage(Component.translatable("minewolves.restarting").color(NamedTextColor.RED));
@@ -175,6 +191,7 @@ public class MineWolvesManager {
 
         MinecraftServer.getSchedulerManager().buildTask(() -> {
             instanceContainer.getPlayers().forEach(p -> p.kick("Game ended, server is restarting..."));
+            System.out.println("Server restarting...");
             MinecraftServer.stopCleanly();
         }).delay(Duration.ofSeconds(25)).schedule();
     }
@@ -189,7 +206,7 @@ public class MineWolvesManager {
             seat.setInvisible(true);
             seat.addPassenger(player);
 
-            //player.teleport(new Pos(sitPoints.getFirst().get(0).doubleValue(), sitPoints.getFirst().get(1).doubleValue(), sitPoints.getFirst().get(2).doubleValue()));
+//            player.teleport(new Pos(sitPoints.getFirst().get(0).doubleValue(), sitPoints.getFirst().get(1).doubleValue(), sitPoints.getFirst().get(2).doubleValue()));
             seats.put(player, seat);
             sitPoints.removeFirst();
         });

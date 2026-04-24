@@ -20,6 +20,10 @@ public final class Listeners {
                 .addListener(new ServerListPing())
                 .addListener(new Chat())
                 .addListener(new PlayerRightClick())
+                .addListener(new PlayerLeave())
+//                .addListener(new Packet())
+                .addListener(new FixRotation())
+                .addListener(new PacketOut())
                 .addListener(new PlayerLeftClick());
 
         globalEventHandler.addChild(entityNode);
