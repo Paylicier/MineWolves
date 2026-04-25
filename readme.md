@@ -22,6 +22,10 @@ An adaptation of the social deduction game [The Werewolves of Millers Hollow](ht
 |     <img src="src/main/resources/pack/assets/minewolves/textures/roles/hunter.png" alt="role icon" width="200"/><br/>**Hunter**      | A brave role that can take down one player with them if they are killed by the werewolves. The hunter must choose their target carefully, as they can only use this ability once.                                                         |
 | <img src="src/main/resources/pack/assets/minewolves/textures/roles/littlegirl.png" alt="role icon" width="200"/><br/>**Little Girl** | A sneaky role that can peek at the werewolves during the night without being detected. The little girl must be cautious, as being caught by the werewolves can lead to her demise.                                                        |
 
+## Supported languages
+- English ([@Paul](https://github.com/Paylicier))
+- French ([@Paul](https://github.com/Paylicier))
+
 ## Setup
 
 ### Prerequisites
@@ -48,6 +52,7 @@ An adaptation of the social deduction game [The Werewolves of Millers Hollow](ht
 - [ ] Add more roles (e.g. Cupid, Thief, etc.)
 - [ ] Implement voice-chat using Mumble/Simple Voice Chat (tbd)
 - [ ] Make a wiki with detailed role descriptions and screenshots
+- [ ] Setup Crowdin or smth for translations
 
 ## Acknowledgements
 - Role icons by [@MathiasDPX](https://github.com/MathiasDPX)

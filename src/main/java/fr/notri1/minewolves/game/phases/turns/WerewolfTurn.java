@@ -73,6 +73,10 @@ public class WerewolfTurn extends NightTurn {
 
                     if (topVoted.size() == 1) {
                         eliminatedPlayer = instanceContainer.getPlayerByUuid(topVoted.getFirst());
+                        if(eliminatedPlayer == null) {
+                            ((NightPhase) mineWolvesManager.getPhase()).nextTurn();
+                            return TaskSchedule.stop();
+                        }
 
                         mineWolvesManager.addPlayerToEliminate(eliminatedPlayer);
 

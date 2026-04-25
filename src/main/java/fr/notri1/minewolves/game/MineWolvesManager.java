@@ -201,7 +201,8 @@ public class MineWolvesManager {
             instanceContainer.getPlayers().forEach(p -> p.kick("Game ended, server is restarting..."));
             System.out.println("Server restarting...");
             MinecraftServer.stopCleanly();
-        }).delay(Duration.ofSeconds(25)).schedule();
+            System.exit(0);
+        }).delay(Duration.ofSeconds(23)).schedule();
     }
 
     private void sitPlayers() {

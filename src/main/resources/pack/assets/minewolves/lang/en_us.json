@@ -32,9 +32,9 @@
 
   "minewolves.day.start": "§eThe sun rises on the village...",
   "minewolves.day.no_kill": "§eThe sun rises, and everyone breathes a sigh of relief... §aNo one was killed during the night!",
-  "minewolves.day.killed": "%s §ewas killed during the night! They were a %s",
+  "minewolves.day.killed": "§eThe sun is up, but %s §enever made it... They were a %s.",
   "minewolves.day.killed.village": "%s §ewas killed by the village! They were a %s",
-  "minewolves.day.kill.start": "§eWho should be eliminated? §cCast your vote!",
+  "minewolves.day.kill.start": "§eWho should be eliminated? Cast your vote!",
   "minewolves.day.kill.eliminated": "%s §ewas eliminated!",
   "minewolves.day.kill.tie": "§eThe vote resulted in a tie! §aNo one was eliminated today.",
   "minewolves.day.kill.no_vote": "§eNo one was voted to be eliminated.",
@@ -44,8 +44,6 @@
   "minewolves.night.start": "§8Night falls over the village... go to sleep.",
 
   "minewolves.eliminated.leave": "%s §7left the game, they were a %s.",
-  "minewolves.eliminated.night": "§eThe sun is up, but %s §enever made it... They were a %s.",
-  "minewolves.eliminated.day": "§eThe village council decided to lynch %s§e, they were a %s.",
 
   "minewolves.role.villager": "Villager",
   "minewolves.role.villager.description": "§7You have no special ability. Use your wits to find the werewolves!",
