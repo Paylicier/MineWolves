@@ -1,15 +1,15 @@
 <div align="center">
 <br>
+<br>
   <img src="https://cdn.hackclub.com/019dba7d-7148-7a80-b685-3994da0773c0/minewolves.png" alt="Minewolves logo" width="400"/>
+
+<br>
 
 # MineWolves
 
 An adaptation of the social deduction game [The Werewolves of Millers Hollow](https://en.wikipedia.org/wiki/The_Werewolves_of_Millers_Hollow) in Minecraft using Minestom
 </div>
-
-## Story
-
-Nestled in a secluded valley, the seemingly tranquil village of Millers Hollow harbors a deadly secret. As night falls, a sinister curse awakens, transforming ordinary townsfolk into ravenous werewolves. Under the cover of darkness, these hidden beasts hunt their neighbors, leaving the community to wake up to a chilling reality. Paranoia grips the village by day as the survivors must use deduction, bluffing, and unique abilities to unmask the monsters hiding in plain sight before the pack consumes them all.
+<br>
 
 ## Current roles
 
