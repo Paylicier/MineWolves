@@ -77,9 +77,9 @@ public class MineWolves {
         Listeners.init();
 
         MinecraftServer.getCommandManager().register(new StartCommand());
-        MinecraftServer.getCommandManager().register(new SpecTestCommand());
-        MinecraftServer.getCommandManager().register(new RoleMenuCommand());
-        MinecraftServer.getCommandManager().register(new SeerMenuCommand());
+//        MinecraftServer.getCommandManager().register(new SpecTestCommand());
+//        MinecraftServer.getCommandManager().register(new RoleMenuCommand());
+//        MinecraftServer.getCommandManager().register(new SeerMenuCommand());
 
         mineWolvesManager = new MineWolvesManager();
 
