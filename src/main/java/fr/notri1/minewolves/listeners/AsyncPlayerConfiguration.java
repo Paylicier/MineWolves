@@ -34,7 +34,7 @@ public class AsyncPlayerConfiguration implements EventListener<AsyncPlayerConfig
             player.kick("Game already started");
         }
         event.setSpawningInstance(instanceContainer);
-        player.setRespawnPoint(new Pos(0, 40, 0));
+        player.setRespawnPoint(new Pos(0, 25, 0));
         player.setGameMode(GameMode.ADVENTURE);
         if (player.getUsername().startsWith("bot")) return null; // mineflayer is broken w/ packs
         ResourcePackRequest request = null;

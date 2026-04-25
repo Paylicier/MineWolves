@@ -8,6 +8,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven(url = "https://jitpack.io")
 }
 
 dependencies {
@@ -17,7 +18,9 @@ dependencies {
     implementation("org.slf4j:slf4j-simple:2.0.17")
     implementation("org.spongepowered:configurate-yaml:4.2.0")
     implementation("dev.hollowcube:polar:1.15.0")
+    implementation("dev.hollowcube:minestom-ce-extensions:1.2.0")
     implementation("it.unimi.dsi:fastutil:8.5.15")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.0")
 }
 
 java {
@@ -29,7 +32,7 @@ java {
 tasks {
     jar {
         manifest {
-            attributes["Main-Class"] = "fr.notri1.minewolves.MineWolves" // Change this to your main class
+            attributes["Main-Class"] = "fr.notri1.minewolves.MineWolves"
         }
     }
 
@@ -42,9 +45,7 @@ tasks {
     }
 }
 
-// 1. On crée une tâche pour générer la classe Java
 val generateVersionClass by tasks.registering {
-    // On définit le dossier de sortie dans le répertoire 'build'
     val outputDir = layout.buildDirectory.dir("generated/sources/version/java")
     outputs.dir(outputDir)
 

@@ -32,6 +32,8 @@ public class MineWolvesConfig {
 
         private String brandName = "MineWolves";
 
+        private String auth = "none";
+
         public String getHost() {
             return host;
         }
@@ -42,6 +44,10 @@ public class MineWolvesConfig {
 
         public String getBrandName() {
             return brandName;
+        }
+
+        public String getAuth() {
+            return auth;
         }
     }
 
