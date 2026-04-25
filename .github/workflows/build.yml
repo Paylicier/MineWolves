@@ -1,0 +1,29 @@
+- name: Set short git commit SHA
+  id: vars
+  run: |
+    calculatedSha=$(git rev-parse --short ${{ github.sha }})
+    echo "COMMIT_SHORT_SHA=$calculatedSha" >> $GITHUB_ENV
+
+- name: Confirm git commit SHA output
+  run: echo ${{ env.COMMIT_SHORT_SHA }}
+
+- name: Compile
+  run: ./gradlew build -PcommitSha=${{ env.COMMIT_SHORT_SHA }}
+
+
+- name: Sauvegarde de l'artefact (Build)
+  uses: actions/upload-artifact@v4
+  with:
+    name: app-binaire-${{ env.COMMIT_SHORT_SHA }}
+    path: build/libs/*.jar
+    retention-days: 7
+
+- name: Création de la Release GitHub
+  uses: softprops/action-gh-release@v2
+  with:
+    tag_name: v-${{ env.COMMIT_SHORT_SHA }}
+    name: Release ${{ env.COMMIT_SHORT_SHA }}
+    files: build/libs/*.jar
+    generate_release_notes: true
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

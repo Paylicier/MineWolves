@@ -42,6 +42,41 @@ tasks {
     }
 }
 
+// 1. On crée une tâche pour générer la classe Java
+val generateVersionClass by tasks.registering {
+    // On définit le dossier de sortie dans le répertoire 'build'
+    val outputDir = layout.buildDirectory.dir("generated/sources/version/java")
+    outputs.dir(outputDir)
+
+    doLast {
+        val commitSha = project.findProperty("commitSha") as? String ?: "dev"
+
+        val packageName = "fr.notri1.minewolves"
+        val packagePath = packageName.replace(".", "/")
+        val classDir = outputDir.get().dir(packagePath).asFile
+        classDir.mkdirs()
+
+        val classFile = File(classDir, "Version.java")
+        classFile.writeText("""
+            package $packageName;
+
+            public final class Version {
+                public static final String COMMIT_SHA = "$commitSha";
+                
+                private Version() {}
+            }
+        """.trimIndent())
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir(generateVersionClass)
+        }
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
 }

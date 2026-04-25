@@ -15,6 +15,7 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import org.spongepowered.configurate.ConfigurateException;
+import fr.notri1.minewolves.Version;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -40,7 +41,7 @@ public class MineWolves {
 
         // Initialization
         MinecraftServer minecraftServer = MinecraftServer.init();
-        MinecraftServer.setBrandName(config.getServer().getBrandName() + "@dev " + MinecraftServer.VERSION_NAME);
+        MinecraftServer.setBrandName(config.getServer().getBrandName() + "@"+ Version.COMMIT_SHA + " " + MinecraftServer.VERSION_NAME);
 
         // Create the instance
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();
